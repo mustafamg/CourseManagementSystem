@@ -1,0 +1,20 @@
+﻿<header>
+    <h3>{{viewTitle}}</h3>
+</header>
+<input type="button" class="btn btn-sm btn-primary" value="{{createButtonTitle}}" ng-click="new()" />
+
+<table class="table table-striped table-bordered table-condensed">
+    <tr>
+        <th>Text</th>
+        <th></th>
+    </tr>
+    <tbody>
+        <tr class="show-hide-animation" ng-repeat="item in items">
+            <td>{{item.Text}}</td>
+            <td>
+                <input type="button" class="btn btn-xs btn-navbar" value="Edit" ng-click="edit(item)" />
+                <input type="button" class="btn btn-xs btn-info" value="Delete" ng-click="delete(item)" />
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+﻿<header>
+    <h3>{{viewTitle}}</h3>
+</header>
+<form name="editForm" novalidate>
+    <fieldset ng-model="item">       
+        <div class="row">
+           <!-- Example of form field
+            Update it to use your item properties
+               instead of using "Text" in the sample-->
+            <div class="col col-lg-2">
+                Text
+            </div>
+            <div class="col col-lg-10">
+                <input type="text" data-ng-model="item.Text" name="Text" required />
+                <span class="errorMessage" ng-show="editForm.Text.$dirty && editForm.Text.$invalid">Text is required
+                </span>
+            </div>
+        </div>
+    </fieldset>
+
+    <button class="btn btn-sm btn-success" ng-click='save(item)'>Save</button>
+    <button class="btn btn-sm" ng-show='showDelete' ng-click='delete(item)' >Delete</button>
+    <button class="btn btn-sm btn-success" ng-click='cancel()'>cancel</button>
+    <!--@*<input class="btn btn-sm btn-primary" type="button" value="Back To instructor List" data-bind="click: $root.backToinstructorsList" />*@-->
+</form>

@@ -1,5 +1,14 @@
 extends ../includes/layout
 
 block content
+	.navbar.navbar-inverse.navbar-fixed-top
+		.container
+			.navbar-header
+				a.navbar-brand(href='/') Home
+					h6 Consult the expert
+			.navbar-collapse.collapse
+				ul.nav.navbar-nav
+					li
+						a(href='/') home
 	section.content
 		div(ng-view)

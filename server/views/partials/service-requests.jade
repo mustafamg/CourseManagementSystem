@@ -1,0 +1,5 @@
+.panel.panel-primary
+	.panel-heading.text-center Requested Services
+	.panel-body 
+		.row(ng-repeat='request in serviceRequests')
+			.col-md-12 {{request.serviceName}}

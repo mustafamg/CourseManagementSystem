@@ -1,7 +1,3 @@
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
@@ -31,5 +27,5 @@ require('./config/mongoose')(config);
 
 
 http.createServer(app).listen(config.port, function(){ //app.get('port')
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express server listening on port ' + config.port);
 });

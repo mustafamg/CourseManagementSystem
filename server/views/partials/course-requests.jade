@@ -1,0 +1,5 @@
+.panel.panel-primary
+	.panel-heading.text-center Requested courses
+	.panel-body
+		.row(ng-repeat='request in courseRequests')
+			.col-md-12 {{request.courseName}}

@@ -33,7 +33,7 @@
                  
                 .when('/main', {
                     templateUrl: 'partials/main',
-                    controller: 'mainController'
+                    controller: 'mainCtrl'
                   })//route.resolve('main', 'main/', 'main'))
                 .otherwise({ redirectTo: '/main' });
         }]);

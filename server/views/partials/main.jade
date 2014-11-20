@@ -1,5 +1,10 @@
-script(type='text/javascript', src='/app/controllers/main/mainController.js')
-h1 this is home to test angular
-h2 test variable {{ title }}
-
-
+script(type='text/javascript', src='/app/controllers/main/mainCtrl.js')
+.container
+	.jumbotron
+		h1 SAMMA Project
+		p Welcom to SAMMA Project
+	.row
+		.col-md-6
+			div(ng-include="'partials/course-requests'")
+		.col-md-6
+			div(ng-include="'partials/service-requests'")

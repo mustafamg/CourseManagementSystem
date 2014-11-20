@@ -10,5 +10,8 @@ block content
 				ul.nav.navbar-nav
 					li
 						a(href='/') home
+				div(ng-include="'/partials/login-navbar'")
 	section.content
 		div(ng-view)
+	footer.container.text-center
+		p &copy; SECC, footer goes here

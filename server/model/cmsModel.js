@@ -14,11 +14,8 @@ var EventSchema = new Schema({
     description: { type: String, required: true },
     cost: {type: Number, required: false},
     from: {type: Date, required: false},
-    to: {type: Date, required: false}
-});
-var CourseRegistrationRequestSchema = new Schema({
-	event : [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}],
-    user: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
+    to: {type: Date, required: false},
+    users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
 var UserSchema = new Schema({
@@ -33,7 +30,7 @@ var UserSchema = new Schema({
 
 module.exports={
 		Course: mongoose.model('Course', CourseSchema),
-		CourseRegistrationRequest: mongoose.model('CourseRegistrationRequest', CourseRegistrationRequestSchema),
+		Event: mongoose.model('Event', EventSchema),
 		User: mongoose.model('User', UserSchema)
 };
 /*

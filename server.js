@@ -29,3 +29,4 @@ require('./config/mongoose')(config);
 http.createServer(app).listen(config.port, function(){ //app.get('port')
   console.log('Express server listening on port ' + config.port);
 });
+module.exports=app;

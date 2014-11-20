@@ -1,7 +1,7 @@
 
 (function (homeController) {
 
-    var data = require("../../data");
+    //var data = require("../../data");
     homeController.init= function(app) {
         app.get("/", function (req, res) {
             res.render('index');//"<html><body>Hi Hi sir</body></html>");

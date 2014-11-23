@@ -1,7 +1,8 @@
 var express = require('express')
 	,logger = require('morgan')
 	,path = require('path')
-	,stylus = require('stylus');
+	,stylus = require('stylus')
+	,bodyParser = require('body-parser');
 
 module.exports = function(app, config){
 	app.set('views', config.rootPath + '/server/views');
@@ -11,8 +12,12 @@ module.exports = function(app, config){
 	
 	app.use(express.static(path.join(config.rootPath, 'public')));
 
-	app.use(express.urlencoded());
-	
+	app.use(express.bodyParser());
+	/* parse application/x-www-form-urlencoded*/
+	//app.use(bodyParser.urlencoded());
+	// parse application/json
+	//app.use(bodyParser.json());
+
 	app.use(stylus.middleware({
 		src: config.rootPath + '/public'
 	}));

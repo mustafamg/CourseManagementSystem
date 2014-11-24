@@ -19,11 +19,11 @@
 				Event.findById(req.body.eventId, function(err, event) {
 					if (err)
 						res.send(500, err);
-					event.push(user);
+					event.users.push(user);
 					event.save(function(err, event) {
 						if (err)
 							res.send(500, err);
-						res.status(200).end('Created');
+						res.status(201).end('Created');
 					});
 				});
 			});

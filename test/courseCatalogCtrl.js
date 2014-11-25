@@ -79,7 +79,7 @@ describe('Course Catalog API', function () {
                 if (err) return done(err);
                 Event.findById(eventId1, function (err, event) {
                     if (err) done(err);
-                    event.users.should.not.empty();
+                    event.users.length.should.not.equal(0);
                 });
                 done();
             });
@@ -106,10 +106,25 @@ describe('Course Catalog API', function () {
                 userEmail: 'abc@itida.gov.eg',
                 eventId: eventId1
             })
-            .expect(404)//conflict
+            .expect(404)//Not Found
             .end(function (err, res) {
                 if (err) return done(err);
                 done();
             });
     });
+
+
+	it('should give event not found for registered user email', function (done) {
+		request(app)
+			.post('/course/registerToRound')
+			.send({
+				userEmail: 'mugamal@itida.gov.eg',
+				eventId: mongoose.Schema.ObjectId
+			})
+			.expect(404)//Not Found
+			.end(function (err, res) {
+				if (err) return done(err);
+				done();
+			});
+	});
 });

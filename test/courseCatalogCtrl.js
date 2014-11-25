@@ -3,9 +3,9 @@ var request = require('supertest');
 var should = require('should');
 
 var mongoose = require('mongoose');
-//var mockgoose = require('mockgoose');
+var mockgoose = require('mockgoose');
 var Model = require('../server/model/cmsModel');
-//mockgoose(mongoose);
+mockgoose(mongoose);
 
 
 describe('Course Catalog API', function () {
@@ -16,7 +16,7 @@ describe('Course Catalog API', function () {
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
-        //mockgoose.reset();
+        mockgoose.reset();
         User.create({
             name: 'Mustafa Gamal',
             email: 'mugamal@itida.gov.eg'

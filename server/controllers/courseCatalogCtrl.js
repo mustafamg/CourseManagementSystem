@@ -19,6 +19,8 @@
 				Event.findById(req.body.eventId, function(err, event) {
 					if (err)
 						res.send(500, err);
+					if(event.users.indexOf(user._id))
+						res.send(409, err);
 					event.users.push(user);
 					event.save(function(err, event) {
 						if (err)

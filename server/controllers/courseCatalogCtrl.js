@@ -19,8 +19,7 @@
 				Event.findById(req.body.eventId, function(err, event) {
 					if (err)
 						res.send(500, err);
-					if(event.users.indexOf(user._id))
-						res.send(409, err);
+					if (!user) res.send(404);
 					event.users.push(user);
 					event.save(function(err, event) {
 						if (err)
@@ -28,6 +27,14 @@
 						res.status(201).end('Created');
 					});
 				});
+			});
+		});
+
+		app.get("/course/list", function (req, res) {
+			var Course = model.Course;
+			Course.find({}, function (err, courses) {
+				if (err) res.status(500).end();
+				res.json({courseList: courses});
 			});
 		});
 

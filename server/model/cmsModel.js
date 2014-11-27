@@ -21,10 +21,10 @@ var EventSchema = new Schema({
 var UserSchema = new Schema({
 	name: {type: String, required: true },
 	email: {type: String, required: true },
-	altEail: {type: String, required: true },
-	company: {type: String, required: true },
-	jobTitle: {type: String, required: true },
-	mobile: {type: String, required: true }
+	altEmail: {type: String, required: false },
+	company: {type: String, required: false },
+	jobTitle: {type: String, required: false },
+	mobile: {type: String, required: false }
 	
 });
 

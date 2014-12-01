@@ -70,10 +70,9 @@ describe('Course Catalog API, Course Registration Operation', function () {
         done();
     }
 
-
-    it('Should register a subscriber to a course and return success', function (done) {
+    it('Should register a subscriber to a event and return success', function (done) {
         request(app)
-            .post('/course/registerToRound')
+            .post('/events/register')
             .send({
                 userEmail: 'mugamal@itida.gov.eg',
                 eventId: eventId1
@@ -89,7 +88,7 @@ describe('Course Catalog API, Course Registration Operation', function () {
             });
     });
 
-    it('Should fail to register a course subscriber that was previously subscribed', function (done) {
+    it('Should fail to register a event subscriber that was previously subscribed', function (done) {
         request(app)
             .post('/course/registerToRound')
             .send({
@@ -117,7 +116,6 @@ describe('Course Catalog API, Course Registration Operation', function () {
             });
     });
 
-
 	it('Should return not found for an event that has not been registered before', function (done) {
 		request(app)
 			.post('/course/registerToRound')
@@ -132,16 +130,13 @@ describe('Course Catalog API, Course Registration Operation', function () {
 			});
 	});
 
-
 });
 
-describe('Course Catalog API, Course Listing Operations', function () {
+describe('Event Management API, Event Listing Operations', function () {
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
-
-
         Course.create([
             {
                 title: 'SW Arch',
@@ -167,9 +162,9 @@ describe('Course Catalog API, Course Listing Operations', function () {
         done();
     }
 
-    it('Should return course rounds in form of eventList of a certain course', function (done) {
+    it('Should return Lise of all events in system', function (done) {
         request(app)
-            .get('/course/rounds')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+            .get('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
             in design*/
             .expect(200)
             .end(function (err, res) {
@@ -178,41 +173,16 @@ describe('Course Catalog API, Course Listing Operations', function () {
                 done();
             });
     });
-
-    it('Should return all the course list titles', function (done) {
-        request(app)
-            .get('/course/list')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("courseList").not.equal(undefined);
-                done();
-            });
-    });
-
-    it('should list up-coming rounds', function(done){
-        request(app)
-            .get('/course/nextRound/SOA_AyHaga')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-         in design*/
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("eventList").not.equal(undefined);
-                done();
-            });
-    });
+    /*******************************************************
+    it('should list up-coming rounds', function(done){});
+     *******************************************************/
 });
 
-
-
 describe('Course Catalog API, Course Alteration Operations "Add, Update and Delete"', function () {
-
-
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
-
 
         Course.create([
             {

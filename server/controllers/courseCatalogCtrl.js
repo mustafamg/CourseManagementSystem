@@ -4,31 +4,33 @@
 
     courseCatalogCtrl.init = function (app) {
         app.get("/course/rounds", function (req, res) {
-            res.json({eventList: [{name: "sdfa"}]});
-            res.status(200).end();
+            var Course = model.Course;
+            Course.find({}, function(err, courses){
+                res.josn(200,{courseList: courses});
+            });
         });
 
         app.post("/course/registerToRound", function (req, res) {
-            // var courseId = req.body.courseId;
-            //res.status(200).end();
-            var User = model.User;// req.body.user;
+            var User = model.User;
             var Event = model.Event;
             User.findOne({email: req.body.userEmail}, function (err, user) {
                 if (err)
-                    res.send(500, err);
-                if (!user)
-                    return res.send(404);
-                Event.findById(req.body.eventId, function (err, event) {
+                    return res.json(500, {message: "Internal server error: " + err});
+                if (user == null)
+                    return res.json(404, {message: "User with that email is not found: " + req.body.userEmail});
+                Event.findById(req.body.eventId, function (err, evnt) {
                     if (err)
-                        return res.send(500, err);
-                    if (!event) return res.send(404);
-                    if (event.users.indexOf(user._id) > -1)
-                        res.status(409).end();
-                    event.users.push(user);
-                    event.save(function (err, event) {
+                        return res.json(500, {message: "Internal server error: " + err});
+                    if (evnt == null)
+                        return res.json(404, {message: "No event with this id"});
+
+                    if (evnt.users.indexOf(user._id) > -1)
+                        return res.json(409, {message: "User already subscribed to this event"}).end();
+                    evnt.users.push(user);
+                    evnt.save(function (err, evnt) {
                         if (err)
-                            res.send(500, err);
-                        res.status(201).end();
+                            return res.json(500, {message: "Internal server error: " + err});
+                        res.json(201, {message: "created"});
                     });
                 });
             });
@@ -40,15 +42,24 @@
                 if (err) res.status(500).end();
                 res.json({courseList: courses});
             });
+            //var cutoff = new Date();
+            //cutoff.setDate(cutoff.getDate()-5);
+            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
 
-        // app.get("/", function(req, res) {
-        // res.set("content-type", "application/json");
-        // data.getNotesCategories(function(err, results) {
-        // res.render("index",
-        // { Title: "Mustafa Node App", error: err, categories:
-        // results.categories });
-        // });
-        // });
+        app.get("/course/listUpcomingRounds", function (req, res) {
+            var Course = model.Course;
+            Course.find({}, function (err, courses) {
+                if (err) res.status(500).end();
+                res.json({courseList: courses});
+            });
+            //var cutoff = new Date();
+            //cutoff.setDate(cutoff.getDate()-5);
+            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
+        });
+
+        app.post("/course/add", function (req, res) {
+            var Course = model.Course;
+        });
     };
 })(module.exports);

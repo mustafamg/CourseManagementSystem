@@ -7,14 +7,12 @@ var mockgoose = require('mockgoose');
 var Model = require('../server/model/cmsModel');
 mockgoose(mongoose);
 var Event = mongoose.model('Event'),
-    Course=mongoose.model('Course'),
+    Service=mongoose.model('Service'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId;
 
-describe('Course Catalog API, Course Registration Operation', function () {
-
-
+describe('Service Catalog API, Service Registration Operation', function () {
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
@@ -27,12 +25,12 @@ describe('Course Catalog API, Course Registration Operation', function () {
         }).then(function () {
             Event.create([{
                 title: 'Practical SOA',
-                description: 'This is a practical course',
+                description: 'This is a practical service',
                 cost: 1500
             },
                 {
                     title: 'SW Arch',
-                    description: 'This is a practical course',
+                    description: 'This is a practical service',
                     cost: 1500,
                     users: [userId]
                 }], function (err, event1,event2) {
@@ -43,14 +41,14 @@ describe('Course Catalog API, Course Registration Operation', function () {
 
         }).then(function(){
 
-                Course.create([
+                service.create([
                     {
                         title: 'SW Arch',
-                        description: 'This is a practical Arch course'
+                        description: 'This is a practical Arch service'
                     },
                     {
                         title: 'Practical SOA',
-                        description: 'This is a practical SOA course'
+                        description: 'This is a practical SOA service'
                     }])
             }
 
@@ -71,12 +69,12 @@ describe('Course Catalog API, Course Registration Operation', function () {
     }
 
 
-    it('Should register a subscriber to a course and return success', function (done) {
+    it('Should register a subscriber request to a certain service and return success', function (done) {
         request(app)
-            .post('/course/registerToRound')
+            .post('/service/request')
             .send({
                 userEmail: 'mugamal@itida.gov.eg',
-                eventId: eventId1
+                serviceCode: eventId1
             })
             .expect(201)//created
             .end(function (err, res) {
@@ -89,67 +87,22 @@ describe('Course Catalog API, Course Registration Operation', function () {
             });
     });
 
-    it('Should fail to register a course subscriber that was previously subscribed', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'mugamal@itida.gov.eg',
-                eventId: eventId2
-            })
-            .expect(409)//conflict
-            .end(function (err, res) {
-                if (err) return done(err);
-                done();
-            });
-    });
-
-    it('Should return not found for a user email that has not been registered before', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'abc@itida.gov.eg',
-                eventId: eventId1
-            })
-            .expect(404)//Not Found
-            .end(function (err, res) {
-                if (err) return done(err);
-                done();
-            });
-    });
-
-
-	it('Should return not found for an event that has not been registered before', function (done) {
-		request(app)
-			.post('/course/registerToRound')
-			.send({
-				userEmail: 'mugamal@itida.gov.eg',
-				eventId: mongoose.Schema.ObjectId
-			})
-			.expect(404)//Not Found
-			.end(function (err, res) {
-				if (err) return done(err);
-				done();
-			});
-	});
-
-
 });
 
-describe('Course Catalog API, Course Listing Operations', function () {
+describe('service Catalog API, service Listing Operations', function () {
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
 
-
-        Course.create([
+        service.create([
             {
                 title: 'SW Arch',
-                description: 'This is a practical Arch course'
+                description: 'This is a practical Arch service'
             },
             {
                 title: 'Practical SOA',
-                description: 'This is a practical SOA course'
+                description: 'This is a practical SOA service'
             }])
             .then(function () {
                 done();
@@ -167,9 +120,9 @@ describe('Course Catalog API, Course Listing Operations', function () {
         done();
     }
 
-    it('Should return course rounds in form of eventList of a certain course', function (done) {
+    it('Should return service rounds in form of eventList of a certain service', function (done) {
         request(app)
-            .get('/course/rounds')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+            .get('/service/rounds')/*Note: Does this provide all service rounds or a certain service rounds? Not reflected
             in design*/
             .expect(200)
             .end(function (err, res) {
@@ -179,49 +132,36 @@ describe('Course Catalog API, Course Listing Operations', function () {
             });
     });
 
-    it('Should return all the course list titles', function (done) {
+
+    it('Should return all the service list titles', function (done) {
         request(app)
-            .get('/course/list')
+            .get('/service/list')
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-                res.body.should.hasOwnProperty("courseList").not.equal(undefined);
+                res.body.should.hasOwnProperty("serviceList").not.equal(undefined);
                 done();
             });
     });
 
-    it('should list up-coming rounds', function(done){
-        request(app)
-            .get('/course/nextRound/SOA_AyHaga')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-         in design*/
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("eventList").not.equal(undefined);
-                done();
-            });
-    });
+    it('should list up-coming rounds', function(done){});
 });
 
-
-
-describe('Course Catalog API, Course Alteration Operations "Add, Update and Delete"', function () {
-
-
+describe('service Catalog API, service Alteration Operations "Add, Update and Delete"', function () {
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
 
 
-        Course.create([
+        Service.create([
             {
                 title: 'SW Arch',
-                description: 'This is a practical Arch course'
+                description: 'This is a practical Arch service'
             },
             {
                 title: 'Practical SOA',
-                description: 'This is a practical SOA course'
+                description: 'This is a practical SOA service'
             }])
 
 
@@ -241,9 +181,9 @@ describe('Course Catalog API, Course Alteration Operations "Add, Update and Dele
         done();
     }
 
-    it('Should return course rounds in form of eventList of courseId', function (done) {
+    it('Should return service rounds in form of eventList of serviceId', function (done) {
         request(app)
-            .get('/course/rounds')
+            .get('/service/rounds')
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
@@ -253,22 +193,22 @@ describe('Course Catalog API, Course Alteration Operations "Add, Update and Dele
     });
 
 
-    it('Should return all the course list titles', function (done) {
+    it('Should return all the service list titles', function (done) {
         request(app)
-            .get('/course/list')
+            .get('/service/list')
             .expect(200)//Not Found
             .end(function (err, res) {
                 if (err) return done(err);
-                res.body.courseList.should.not.equal(undefined);
+                res.body.serviceList.should.not.equal(undefined);
                 done();
             });
     });
 });
 
 describe('Delete operation', function(){
-    it('should delete course of certain id');
+    it('should delete service of certain id');
 });
 
 describe('NewRound operation', function(){
-    it('should create new round (event) of certain course');
+    it('should create new round (event) of certain service');
 });

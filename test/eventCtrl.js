@@ -134,34 +134,6 @@ describe('Course Catalog API, Course Registration Operation', function () {
 
 describe('Event Management API, Event Listing Operations', function () {
 
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-        Course.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch course'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA course'
-            }])
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
-
     it('Should return Lise of all events in system', function (done) {
         request(app)
             .get('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected

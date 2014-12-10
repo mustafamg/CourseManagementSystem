@@ -6,16 +6,17 @@
         app.get("/course/rounds", function (req, res) {
             var Course = model.Course;
             Course.find({}, function(err, courses){
-                res.josn(200,{courseList: courses});
+                res.json(200,{courseList: courses});
             });
         });
 
         app.post("/course/registerToRound", function (req, res) {
             var User = model.User;
             var Event = model.Event;
-            User.findOne({email: req.body.userEmail}, function (err, user) {
-                if (err)
-                    return res.json(500, {message: "Internal server error: " + err});
+            User.findOne({email: req.body.userEmail}).exec()
+                .then(function (user) {
+                //if (err)
+                //    return res.json(500, {message: "Internal server error: " + err});
                 if (user == null)
                     return res.json(404, {message: "User with that email is not found: " + req.body.userEmail});
                 Event.findById(req.body.eventId, function (err, evnt) {
@@ -47,12 +48,16 @@
             //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
 
-        app.get("/course/listUpcomingRounds", function (req, res) {
-            var Course = model.Course;
-            Course.find({}, function (err, courses) {
+        app.get("/course/nextRound/:courseCode", function (req, res) {
+
+            var Event = model.Event;
+            Event.find({from: {$gt:Date.now()}, refId: req.param["courseCode"]}, function (err, evnts) {
                 if (err) res.status(500).end();
-                res.json({courseList: courses});
+                res.json({eventList: evnts});
             });
+            //app.get('/p/:tagId', function(req, res) {
+            //    res.send("tagId is set to " + req.param("tagId"));
+            //});
             //var cutoff = new Date();
             //cutoff.setDate(cutoff.getDate()-5);
             //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
@@ -60,6 +65,7 @@
 
         app.post("/course/add", function (req, res) {
             var Course = model.Course;
+            Course.create(req.body);
         });
     };
 })(module.exports);

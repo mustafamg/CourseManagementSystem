@@ -13,61 +13,6 @@ var eventId1, eventId2,
     userId;
 
 describe('Service Catalog API, Service Registration Operation', function () {
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-        User.create({
-            name: 'Mustafa Gamal',
-            email: 'mugamal@itida.gov.eg'
-        }, function (err, model) {
-            if (err) done(err);
-            userId = model._id;
-        }).then(function () {
-            Event.create([{
-                title: 'Practical SOA',
-                description: 'This is a practical service',
-                cost: 1500
-            },
-                {
-                    title: 'SW Arch',
-                    description: 'This is a practical service',
-                    cost: 1500,
-                    users: [userId]
-                }], function (err, event1,event2) {
-                if (err) done(err);
-                eventId1 = event1._id;
-                eventId2 = event2._id;
-            })
-
-        }).then(function(){
-
-                service.create([
-                    {
-                        title: 'SW Arch',
-                        description: 'This is a practical Arch service'
-                    },
-                    {
-                        title: 'Practical SOA',
-                        description: 'This is a practical SOA service'
-                    }])
-            }
-
-        ).then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
-
 
     it('Should register a subscriber request to a certain service and return success', function (done) {
         request(app)
@@ -90,35 +35,6 @@ describe('Service Catalog API, Service Registration Operation', function () {
 });
 
 describe('service Catalog API, service Listing Operations', function () {
-
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-
-        service.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch service'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA service'
-            }])
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
 
     it('Should return service rounds in form of eventList of a certain service', function (done) {
         request(app)
@@ -148,38 +64,6 @@ describe('service Catalog API, service Listing Operations', function () {
 });
 
 describe('service Catalog API, service Alteration Operations "Add, Update and Delete"', function () {
-
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-
-
-        Service.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch service'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA service'
-            }])
-
-
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
 
     it('Should return service rounds in form of eventList of serviceId', function (done) {
         request(app)

@@ -7,13 +7,12 @@ var mockgoose = require('mockgoose');
 var Model = require('../server/model/cmsModel');
 mockgoose(mongoose);
 var Event = mongoose.model('Event'),
-    Course=mongoose.model('Course'),
+    Course = mongoose.model('Course'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId;
 
 describe('Course Catalog API, Course Registration Operation', function () {
-
 
     before(prepareDataForTest);
     function prepareDataForTest(done) {
@@ -35,13 +34,13 @@ describe('Course Catalog API, Course Registration Operation', function () {
                     description: 'This is a practical course',
                     cost: 1500,
                     users: [userId]
-                }], function (err, event1,event2) {
+                }], function (err, event1, event2) {
                 if (err) done(err);
                 eventId1 = event1._id;
                 eventId2 = event2._id;
             })
 
-        }).then(function(){
+        }).then(function () {
 
                 Course.create([
                     {
@@ -53,11 +52,11 @@ describe('Course Catalog API, Course Registration Operation', function () {
                         description: 'This is a practical SOA course'
                     }])
             }
-
         ).then(function () {
                 done();
             });
     }
+
     after(function (done) {
         clearDB(done);
     });
@@ -118,68 +117,38 @@ describe('Course Catalog API, Course Registration Operation', function () {
     });
 
 
-	it('Should return not found for an event that has not been registered before', function (done) {
-		request(app)
-			.post('/course/registerToRound')
-			.send({
-				userEmail: 'mugamal@itida.gov.eg',
-				eventId: mongoose.Schema.ObjectId
-			})
-			.expect(404)//Not Found
-			.end(function (err, res) {
-				if (err) return done(err);
-				done();
-			});
-	});
+    it('Should return not found for an event that has not been registered before', function (done) {
+        request(app)
+            .post('/course/registerToRound')
+            .send({
+                userEmail: 'mugamal@itida.gov.eg',
+                eventId: mongoose.Schema.ObjectId
+            })
+            .expect(404)//Not Found
+            .end(function (err, res) {
+                if (err) return done(err);
+                done();
+            });
+    });
 
 
 });
 
 describe('Course Catalog API, Course Listing Operations', function () {
 
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-
-
-        Course.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch course'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA course'
-            }])
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
-
     it('Should return course rounds in form of eventList of a certain course', function (done) {
         request(app)
             .get('/course/rounds')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-            in design*/
+         in design*/
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-                res.body.should.hasOwnProperty("eventList").not.equal(undefined);
+                res.body.should.hasOwnProperty("courseList").not.equal(undefined);
                 done();
             });
     });
 
-    it('Should return all the course list titles', function (done) {
+    it('Should return all courses', function (done) {
         request(app)
             .get('/course/list')
             .expect(200)
@@ -190,7 +159,7 @@ describe('Course Catalog API, Course Listing Operations', function () {
             });
     });
 
-    it('should list up-coming rounds', function(done){
+    it('should list up-coming rounds', function (done) {
         request(app)
             .get('/course/nextRound/SOA_AyHaga')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
          in design*/
@@ -204,42 +173,7 @@ describe('Course Catalog API, Course Listing Operations', function () {
 });
 
 
-
 describe('Course Catalog API, Course Alteration Operations "Add, Update and Delete"', function () {
-
-
-
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-
-
-        Course.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch course'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA course'
-            }])
-
-
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
 
     it('Should return course rounds in form of eventList of courseId', function (done) {
         request(app)
@@ -265,10 +199,10 @@ describe('Course Catalog API, Course Alteration Operations "Add, Update and Dele
     });
 });
 
-describe('Delete operation', function(){
+describe('Delete operation', function () {
     it('should delete course of certain id');
 });
 
-describe('NewRound operation', function(){
+describe('NewRound operation', function () {
     it('should create new round (event) of certain course');
 });

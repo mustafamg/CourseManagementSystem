@@ -1,15 +1,10 @@
 (function (courseCatalogCtrl) {
 
     var model = require('../model/cmsModel');
-
+    var Course = model.Course;
     courseCatalogCtrl.init = function (app) {
-        app.get("/course/rounds", function (req, res) {
-            var Course = model.Course;
-            Course.find({}, function(err, courses){
-                res.json(200,{courseList: courses});
-            });
-        });
 
+        /* Design Unique ID: 2637*/
         app.post("/course/registerToRound", function (req, res) {
             var User = model.User;
             var Event = model.Event;
@@ -36,9 +31,8 @@
                 });
             });
         });
-
-        app.get("/course/list", function (req, res) {
-            var Course = model.Course;
+        /* Design Unique ID: 2604*/
+        app.get("/courses", function (req, res) {
             Course.find({}, function (err, courses) {
                 if (err) res.status(500).end();
                 res.json({courseList: courses});
@@ -47,8 +41,8 @@
             //cutoff.setDate(cutoff.getDate()-5);
             //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
-
-        app.get("/course/nextRound/:courseCode", function (req, res) {
+        /* Design Unique ID: 2650*/
+        app.get("/courses/nextRound/:courseCode", function (req, res) {
 
             var Event = model.Event;
             Event.find({from: {$gt:Date.now()}, refId: req.param["courseCode"]}, function (err, evnts) {
@@ -62,10 +56,32 @@
             //cutoff.setDate(cutoff.getDate()-5);
             //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
+        /* Design Unique ID: 2605*/
+        app.post("/courses", function (req, res) {
 
-        app.post("/course/add", function (req, res) {
-            var Course = model.Course;
-            Course.create(req.body);
+            var course = new Course();
+            course.code = req.body.code;
+            course.title=req.body.name;
+            course.description = req.body.description;
+            course.cost = req.body.cost;
+
+            course.save(function(err, course){
+               if(!err){
+                   res.json(201,{course:course});
+               }else{
+                   res.json(500, {message: "Could not create course. Error: " + err});
+               }
+
+            });
+            //Course.create(req.body);
+
+            newWorkout.save(function(err) {
+                if(!err) {
+                    res.json(201, {message: "Workout created with name: " + newWorkout.name });
+                } else {
+                    res.json(500, {message: "Could not create workout. Error: " + err});
+                }
+            });
         });
     };
 })(module.exports);

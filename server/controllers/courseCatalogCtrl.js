@@ -61,13 +61,13 @@
 
             var course = new Course();
             course.code = req.body.code;
-            course.title=req.body.name;
+            course.title = req.body.title;
             course.description = req.body.description;
             course.cost = req.body.cost;
 
             course.save(function(err, course){
                if(!err){
-                   res.json(201,{course:course});
+                   res.json(201,{id: course._id});
                }else{
                    res.json(500, {message: "Could not create course. Error: " + err});
                }

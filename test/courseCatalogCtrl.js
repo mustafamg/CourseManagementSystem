@@ -180,7 +180,7 @@ describe('Course Catalog Operations', function () {
                 .expect(201)//Created
                 .end(function (err, res) {
                     if (err) return done(err);
-                    res.body.hasOwnProperty(id);
+                    res.body.hasOwnProperty('id');
                     done();
                 });
         });

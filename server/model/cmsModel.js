@@ -5,7 +5,7 @@ var CourseSchema = new Schema({
     code: {type: String, required: true},
     title: {type: String, required: true},
     description: {type: String, required: true},
-    cost: {type: Number, required: false},
+    cost: {type: String, required: false},
     rounds: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}]
 });
 

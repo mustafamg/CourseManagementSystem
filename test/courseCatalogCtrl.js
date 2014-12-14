@@ -35,7 +35,8 @@ describe('Course Catalog Operations', function () {
                 description: 'This is a practical course',
                 from:soaCourseFromDate,
                 to:soaCourseToDate,
-                cost: 1500
+                cost: 1500,
+                refId:"SoaCode"
             },
                 {
                     title: archCourse,
@@ -64,8 +65,8 @@ describe('Course Catalog Operations', function () {
                         description: 'This is a practical SOA course'
                     }],function (err, model, model2) {
                     if (err) done(err);
-                    soaCourseId  = model._id;
-                    archCourseId = model2._id;
+                    soaCourseId  =model2._id;
+                    archCourseId =  model._id;
                 } )
             }
         ).then(function () {
@@ -194,6 +195,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .put('/courses')
                 .send({
+                    id: archCourseId,
                     code: 'ArchCode',
                     title: 'Arch Code Update',
                     description:'This is an Arch Code update',
@@ -229,12 +231,15 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .delete('/courses')
                 .send({
-                    _id: soaCourseId
+                    id: soaCourseId
                 })
                 .expect(204)//No Content
                 .end(function (err, res) {
                     if (err) return done(err);
-                    done();
+                    Course.findById(soaCourseId,function(err, course){
+                        should.not.exist(course);
+                        done();
+                    });
                 });
         });
 /*2607*/
@@ -257,15 +262,14 @@ describe('Course Catalog Operations', function () {
         /*2650*/
         it('Try to get a course next round', function (done) {
             request(app)
-                .post('/courses/getCourseNextRounds')
-                .send({
-                    code:'SoaCode'
-                })
+                .get('/courses/nextRounds/SoaCode')
                 .expect(200)//OK
                 .end(function (err, res) {
-                    if (err) return done(err);
-                    res.body.from.should.equal(soaCourseFromDate);
-                    res.body.to.should.equal(soaCourseToDate);
+                    should.not.exist(err);
+
+                    should.exist(res.body.eventList);
+                    res.body.eventList[0].from.should.equal(soaCourseFromDate);
+                    res.body.eventList[0].to.should.equal(soaCourseToDate);
                     done();
                 });
         });
@@ -288,7 +292,7 @@ describe('Course Catalog Operations', function () {
 
     describe('Course NewRound operation', function () {
 /*2651*/
-        it('Try to add a new course round', function (done) {
+        it('Should add a new course round', function (done) {
             request(app)
                 .post('/courses/newRound')
                 .send({

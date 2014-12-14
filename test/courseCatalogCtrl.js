@@ -10,11 +10,17 @@ var Event = mongoose.model('Event'),
     Course = mongoose.model('Course'),
     User = mongoose.model('User');
 var eventId1, eventId2,
-    userId;
-
-describe('Course Catalog API, Course Registration Operation', function () {
-
-    before(prepareDataForTest);
+    userId,soaCourse,archCourse,soaCourseId,archCourseId;
+var courseFromDate= new Date('2015','01','20');
+var courseToDate= new Date('2015','01','22');
+var soaCourseFromDate= new Date('2015','02','30');
+var soaCourseToDate= new Date('2015','03','01');
+var archCourseFromDate= new Date('2015','02','20');
+var archCourseToDate= new Date('2015','02','22');
+describe('Course Catalog Operations', function () {
+    soaCourse='Practical SOA';
+    archCourse='SW Arch';
+    beforeEach(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
         User.create({
@@ -25,13 +31,17 @@ describe('Course Catalog API, Course Registration Operation', function () {
             userId = model._id;
         }).then(function () {
             Event.create([{
-                title: 'Practical SOA',
+                title: soaCourse,
                 description: 'This is a practical course',
+                from:soaCourseFromDate,
+                to:soaCourseToDate,
                 cost: 1500
             },
                 {
-                    title: 'SW Arch',
+                    title: archCourse,
                     description: 'This is a practical course',
+                    from:archCourseFromDate,
+                    to:archCourseToDate,
                     cost: 1500,
                     users: [userId]
                 }], function (err, event1, event2) {
@@ -44,165 +54,271 @@ describe('Course Catalog API, Course Registration Operation', function () {
 
                 Course.create([
                     {
-                        title: 'SW Arch',
+                        code:'ArchCode',
+                        title: archCourse,
                         description: 'This is a practical Arch course'
                     },
                     {
-                        title: 'Practical SOA',
+                        code:'SoaCode',
+                        title: soaCourse,
                         description: 'This is a practical SOA course'
-                    }])
+                    }],function (err, model, model2) {
+                    if (err) done(err);
+                    soaCourseId  = model._id;
+                    archCourseId = model2._id;
+                } )
             }
         ).then(function () {
                 done();
             });
     }
 
-    after(function (done) {
+    afterEach(function (done) {
         clearDB(done);
     });
 
     function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
+        mockgoose.reset();
         done();
     }
 
+    describe('Course Registration Operation', function () {
 
-    it('Should register a subscriber to a course and return success', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'mugamal@itida.gov.eg',
-                eventId: eventId1
-            })
-            .expect(201)//created
-            .end(function (err, res) {
-                if (err) return done(err);
-                Event.findById(eventId1, function (err, event) {
-                    if (err) done(err);
-                    event.users.length.should.not.equal(0);
+        it('Should register a subscriber to a course and return success', function (done) {
+            request(app)
+                .post('/course/registerToRound')
+                .send({
+                    userEmail: 'mugamal@itida.gov.eg',
+                    eventId: eventId1
+                })
+                .expect(201)//created
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    Event.findById(eventId1, function (err, event) {
+                        if (err) done(err);
+                        event.users.length.should.not.equal(0);
+                    });
+                    done();
                 });
-                done();
-            });
-    });
+        });
 
-    it('Should fail to register a course subscriber that was previously subscribed', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'mugamal@itida.gov.eg',
-                eventId: eventId2
-            })
-            .expect(409)//conflict
-            .end(function (err, res) {
-                if (err) return done(err);
-                done();
-            });
-    });
+        it('Should fail to register a course subscriber that was previously subscribed', function (done) {
+            request(app)
+                .post('/course/registerToRound')
+                .send({
+                    userEmail: 'mugamal@itida.gov.eg',
+                    eventId: eventId2
+                })
+                .expect(409)//conflict
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
 
-    it('Should return not found for a user email that has not been registered before', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'abc@itida.gov.eg',
-                eventId: eventId1
-            })
-            .expect(404)//Not Found
-            .end(function (err, res) {
-                if (err) return done(err);
-                done();
-            });
-    });
+        it('Should return not found for a user email that has not been registered before', function (done) {
+            request(app)
+                .post('/course/registerToRound')
+                .send({
+                    userEmail: 'abc@itida.gov.eg',
+                    eventId: eventId1
+                })
+                .expect(404)//Not Found
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
 
+        it('Should return not found for an event that has not been registered before', function (done) {
+            request(app)
+                .post('/course/registerToRound')
+                .send({
+                    userEmail: 'mugamal@itida.gov.eg',
+                    eventId: mongoose.Schema.ObjectId
+                })
+                .expect(404)//Not Found
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
 
-    it('Should return not found for an event that has not been registered before', function (done) {
-        request(app)
-            .post('/course/registerToRound')
-            .send({
-                userEmail: 'mugamal@itida.gov.eg',
-                eventId: mongoose.Schema.ObjectId
-            })
-            .expect(404)//Not Found
-            .end(function (err, res) {
-                if (err) return done(err);
-                done();
-            });
-    });
-
-
-});
-
-describe('Course Catalog API, Course Listing Operations', function () {
-
-    it('Should return course rounds in form of eventList of a certain course', function (done) {
-        request(app)
-            .get('/course/rounds')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-         in design*/
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("courseList").not.equal(undefined);
-                done();
-            });
-    });
-
-    it('Should return all courses', function (done) {
-        request(app)
-            .get('/course/list')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("courseList").not.equal(undefined);
-                done();
-            });
-    });
-
-    it('should list up-coming rounds', function (done) {
-        request(app)
-            .get('/course/nextRound/SOA_AyHaga')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-         in design*/
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("eventList").not.equal(undefined);
-                done();
-            });
-    });
-});
-
-
-describe('Course Catalog API, Course Alteration Operations "Add, Update and Delete"', function () {
-
-    it('Should return course rounds in form of eventList of courseId', function (done) {
-        request(app)
-            .get('/course/rounds')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.eventList.should.not.equal(undefined);
-                done();
-            });
     });
 
 
-    it('Should return all the course list titles', function (done) {
-        request(app)
-            .get('/course/list')
-            .expect(200)//Not Found
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.courseList.should.not.equal(undefined);
-                done();
-            });
+
+    describe('Course Listing Operations"', function () {
+
+/*2604*/
+        it('Should return a list of all courses', function (done) {
+            request(app)
+                .get('/courses')
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.should.hasOwnProperty("courseList").not.equal(undefined);
+                    res.body.courseList[0].should.hasOwnProperty("title").equal(archCourse);
+                    res.body.courseList[1].should.hasOwnProperty("title").equal(soaCourse);
+                    done();
+                });
+        });
     });
-});
 
-describe('Delete operation', function () {
-    it('should delete course of certain id');
-});
+    describe('Course Addition Operations', function () {
 
-describe('NewRound operation', function () {
-    it('should create new round (event) of certain course');
+        /*2605*/
+        it('Should add a new course', function (done) {
+            request(app)
+                .post('/courses')
+                .send({
+                    code: 'AgileCode',
+                    title: 'Agile Course',
+                    description:'This is an Agile Course',
+                    cost:'1500 L.E'
+                })
+                .expect(201)//Created
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.hasOwnProperty(id);
+                    done();
+                });
+        });
+
+
+
+    });
+    describe('Course Update operation', function () {
+        /*2606*/
+        it('Should update an existing course', function (done) {
+            request(app)
+                .put('/courses')
+                .send({
+                    code: 'ArchCode',
+                    title: 'Arch Code Update',
+                    description:'This is an Arch Code update',
+                    cost:'1500 L.E'
+                })
+                .expect(200)//Ok
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+        /*2606*/
+        it('Try to update a non existing course', function (done) {
+            request(app)
+                .put('/courses')
+                .send({
+                    code: 'InExistentCode',
+                    title: 'Updating InExistent Code',
+                    description:'This should not be processed',
+                    cost:'1500 L.E'
+                })
+                .expect(404)//NOT FOUND
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
+    describe('Course Delete operation', function () {
+/*2607*/
+        it('Try to delete an existing course', function (done) {
+            request(app)
+                .delete('/courses')
+                .send({
+                    _id: soaCourseId
+                })
+                .expect(204)//No Content
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+/*2607*/
+        it('Try to delete a non existing course', function (done) {
+            request(app)
+                .delete('/courses')
+                .send({
+                    _id: eventId1//Added as a random Id intentionally
+                })
+                .expect(404)//NOT FOUND
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
+    describe('Course Get Next Round operation', function () {
+
+        /*2650*/
+        it('Try to get a course next round', function (done) {
+            request(app)
+                .post('/courses/getCourseNextRounds')
+                .send({
+                    code:'SoaCode'
+                })
+                .expect(200)//OK
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.from.should.equal(soaCourseFromDate);
+                    res.body.to.should.equal(soaCourseToDate);
+                    done();
+                });
+        });
+        /*2650*/
+
+        it('Try to get a non existing course Next Round', function (done) {
+            request(app)
+                .post('/courses/getCourseNextRounds')
+                .send({
+                    code:'NOTFOUND'
+                })
+                .expect(404)// Not Found
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+
+    });
+
+    describe('Course NewRound operation', function () {
+/*2651*/
+        it('Try to add a new course round', function (done) {
+            request(app)
+                .post('/courses/newRound')
+                .send({
+                    _id: archCourseId,//Added as a random Id intentionally
+                    from:courseFromDate,
+                    to: courseToDate
+                })
+                .expect(201)//Created
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body._id.should.equal(archCourseId);
+                    res.body.from.should.equal(courseFromDate);
+                    res.body.to.should.equal(courseToDate);
+                    done();
+                });
+        });
+
+/*2651*/
+        it('Try to add a new course round to a non existent course', function (done) {
+            request(app)
+                .post('/courses/newRound')
+                .send({
+                    _id: eventId1//Added as a random Id intentionally
+                })
+                .expect(404)//NOT FOUND
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
 });

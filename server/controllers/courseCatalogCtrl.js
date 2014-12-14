@@ -71,17 +71,8 @@
                }else{
                    res.json(500, {message: "Could not create course. Error: " + err});
                }
-
             });
             //Course.create(req.body);
-
-            newWorkout.save(function(err) {
-                if(!err) {
-                    res.json(201, {message: "Workout created with name: " + newWorkout.name });
-                } else {
-                    res.json(500, {message: "Could not create workout. Error: " + err});
-                }
-            });
         });
     };
 })(module.exports);

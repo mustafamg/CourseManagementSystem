@@ -25,8 +25,8 @@ var EventSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
     cost: {type: Number, required: false},
-    from: {type: Date, required: false},
-    to: {type: Date, required: false},
+    from: {type: Date, required: true},
+    to: {type: Date, required: true},
     refId: {type: String, required: false}, //course Id if the event is for course
     users: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });

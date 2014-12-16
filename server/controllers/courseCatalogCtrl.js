@@ -48,6 +48,7 @@
             console.log(req.param("courseCode"));
             Event.find({from: {$gt: Date.now()}, refId: req.param("courseCode")}, function (err, evnts) {
                 if (err) res.status(500).end();
+                console.log(evnts[0].from);
                 res.json({eventList: evnts});
             });
             //app.get('/p/:tagId', function(req, res) {

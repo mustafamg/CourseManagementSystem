@@ -2,8 +2,11 @@ var app = require('./helper/app.js');
 var request = require('supertest');
 var should = require('should');
 
+var moment=require('moment');
+
 var mongoose = require('mongoose');
 var mockgoose = require('mockgoose');
+
 var Model = require('../server/model/cmsModel');
 mockgoose(mongoose);
 var Event = mongoose.model('Event'),
@@ -11,10 +14,10 @@ var Event = mongoose.model('Event'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId,soaCourse,archCourse,soaCourseId,archCourseId;
-var courseFromDate= new Date('2015','01','20');
-var courseToDate= new Date('2015','01','22');
-var soaCourseFromDate= new Date('2015','02','30');
-var soaCourseToDate= new Date('2015','03','01');
+var courseFromDate= moment(['2015','01','20']);
+var courseToDate= moment(['2015','01','22']);
+var soaCourseFromDate= moment(['2015','02','30']);
+var soaCourseToDate= moment(['2015','03','01']);
 var archCourseFromDate= new Date('2015','02','20');
 var archCourseToDate= new Date('2015','02','22');
 describe('Course Catalog Operations', function () {
@@ -267,9 +270,10 @@ describe('Course Catalog Operations', function () {
                 .end(function (err, res) {
                     should.not.exist(err);
 
-                    should.exist(res.body.eventList);
-                    res.body.eventList[0].from.should.equal(soaCourseFromDate);
-                    res.body.eventList[0].to.should.equal(soaCourseToDate);
+                    should.exist(res.body.eventList);//date difference less than value
+                    var from=moment(res.body.eventList[0].from);
+                    var dif = from.diff(soaCourseFromDate);//.should.equalDate.
+                    dif.should.be.approximately(0,0.1);
                     done();
                 });
         });

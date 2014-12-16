@@ -9,6 +9,7 @@
     "body-parser": "^1.9.2",
     "express": "^3.18.3",
     "jade": "*",
+    "moment": "^2.8.4",
     "mongoose": "^3.8.17",
     "morgan": "^1.4.1",
     "stylus": "^0.49.2"

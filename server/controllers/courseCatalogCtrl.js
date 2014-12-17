@@ -2,6 +2,7 @@
 
     var model = require('../model/cmsModel');
     var Course = model.Course;
+    var Event = model.Event;
     courseCatalogCtrl.init = function (app) {
 
         /* Design Unique ID: 2637*/
@@ -115,9 +116,11 @@
         app.post("/courses/newRound", function (req, res) {
 
             Course.findById(req.body.id, function (err, course) {
-                if (err) res.json(500, {message: "Could not create Event. Error: " + err});
+                if (err)
+                    return res.json(500, {message: "Could not create Event. Error: " + err});
 
-                if(!course) res.json(404, {message: "Could not find course with id" + res.body.id});
+                if(!course)
+                    return res.json(404, {message: "Could not find course with id" + req.body.id});
 
                 var event = new Event();
                 event.title = course.title;
@@ -128,7 +131,7 @@
                 event.to = req.body.to;
                 event.save(function (err, course) {
                     if (!err) {
-                        res.json(201, {id: event});
+                        res.json(201, {event: event});
                     } else {
                         res.json(500, {message: "Could not create course. Error: " + err});
                     }

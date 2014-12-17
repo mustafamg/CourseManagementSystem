@@ -13,8 +13,7 @@ var eventId1, eventId2,
     userId;
 
 describe('Course Catalog API, Course Registration Operation', function () {
-
-
+    
     before(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();

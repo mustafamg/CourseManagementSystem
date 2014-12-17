@@ -310,10 +310,10 @@ describe('Course Catalog Operations', function () {
                     should.exist(res.body.event);
 
                     var from=moment(res.body.event.from);
-                    var fromDif = from.diff(archCourseFromDate);//.should.equalDate.
+                    var fromDif = from.diff(courseFromDate);//.should.equalDate.
                     var to=moment(res.body.event.to);
-                    var toDif = to.diff(archCourseToDate);//.should.equalDate.
-                    res.body.id.should.equal(archCourseId);
+                    var toDif = to.diff(courseToDate);//.should.equalDate.
+                    should.exist(res.body.event._id);
                     fromDif.should.be.approximately(0,1);
                     toDif.should.be.approximately(0,1);
                     done();
@@ -325,7 +325,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .post('/courses/newRound')
                 .send({
-                    _id: eventId1//Added as a random Id intentionally
+                    id: '666f6f2d6261722d71757578'//Added as a random Id intentionally
                 })
                 .expect(404)//NOT FOUND
                 .end(function (err, res) {

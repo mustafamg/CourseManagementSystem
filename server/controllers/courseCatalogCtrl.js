@@ -96,12 +96,12 @@
             });
         });
 
-        app.delete("/courses", function(req, res){
+        app.delete("/courses", function (req, res) {
             Course.findById(req.body.id, function (err, course) {
                 if (course == null)
                     return res.status(404).end();
 
-               course.remove(function (err) {
+                course.remove(function (err) {
                     if (!err) {
                         res.status(204).end();
                     } else {
@@ -109,6 +109,33 @@
                     }
                 });
             });
+        });
+
+
+        app.post("/courses/newRound", function (req, res) {
+
+            Course.findById(req.body.id, function (err, course) {
+                if (err) res.json(500, {message: "Could not create Event. Error: " + err});
+
+                if(!course) res.json(404, {message: "Could not find course with id" + res.body.id});
+
+                var event = new Event();
+                event.title = course.title;
+                event.description = course.description;
+                event.cost = course.cost;
+                event.refId = course._id;
+                event.from = req.body.from;
+                event.to = req.body.to;
+                event.save(function (err, course) {
+                    if (!err) {
+                        res.json(201, {id: event});
+                    } else {
+                        res.json(500, {message: "Could not create course. Error: " + err});
+                    }
+                });
+            });
+
+            //Course.create(req.body);
         });
     };
 })(module.exports);

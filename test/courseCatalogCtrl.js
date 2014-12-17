@@ -273,7 +273,7 @@ describe('Course Catalog Operations', function () {
                     should.exist(res.body.eventList);//date difference less than value
                     var from=moment(res.body.eventList[0].from);
                     var dif = from.diff(soaCourseFromDate);//.should.equalDate.
-                    dif.should.be.approximately(0,0.1);
+                    dif.should.be.approximately(0,1);
                     done();
                 });
         });
@@ -300,16 +300,22 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .post('/courses/newRound')
                 .send({
-                    _id: archCourseId,//Added as a random Id intentionally
+                    id: archCourseId,//Added as a random Id intentionally
                     from:courseFromDate,
                     to: courseToDate
                 })
                 .expect(201)//Created
                 .end(function (err, res) {
-                    if (err) return done(err);
-                    res.body._id.should.equal(archCourseId);
-                    res.body.from.should.equal(courseFromDate);
-                    res.body.to.should.equal(courseToDate);
+                    should.not.exist(err);
+                    should.exist(res.body.event);
+
+                    var from=moment(res.body.event.from);
+                    var fromDif = from.diff(archCourseFromDate);//.should.equalDate.
+                    var to=moment(res.body.event.to);
+                    var toDif = to.diff(archCourseToDate);//.should.equalDate.
+                    res.body.id.should.equal(archCourseId);
+                    fromDif.should.be.approximately(0,1);
+                    toDif.should.be.approximately(0,1);
                     done();
                 });
         });

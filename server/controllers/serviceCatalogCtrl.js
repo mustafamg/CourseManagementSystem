@@ -8,12 +8,12 @@
         app.get("/services", function (req, res) {
             Service.find({}, function (err, service) {
                 if (err) res.status(500).end();
-                res.json({courseList: service});
+                res.json({serviceList: service});
             });
         });
 
         /* Design Unique ID: */
-        app.post("/service", function (req, res) {
+        app.post("/services", function (req, res) {
 
             var service = new Service();
             service.code = req.body.code;
@@ -63,7 +63,7 @@
             });
         });
 
-        app.post("/service/register", function (req, res) {
+        app.post("/services/register", function (req, res) {
             var User = model.User;
             var ServiceRequest = model.ServiceRequest;
             User.findOne({email: req.body.userEmail}).exec()

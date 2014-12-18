@@ -132,5 +132,18 @@
             });
             //Course.create(req.body);
         });
+
+        function createCourse(body){
+            var course = new Course();
+            return fillEvent(course,body);
+        };
+
+        function fillEvent(course, body){
+            course.title = body.title;
+            course.description = body.description;
+            course.cost = body.cost;
+            course.from = body.from;
+            course.to = body.to;
+        };
     };
 })(module.exports);

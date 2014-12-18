@@ -1,12 +1,12 @@
-(function (courseCatalogCtrl) {
+(function (eventCatalogCtrl) {
 
     var model = require('../model/cmsModel');
     var Course = model.Course;
     var Event = model.Event;
-    courseCatalogCtrl.init = function (app) {
+    eventCatalogCtrl.init = function (app) {
 
         /* Design Unique ID: 2637*/
-        app.post("/course/registerToRound", function (req, res) {
+        app.post("/events/register", function (req, res) {
             var User = model.User;
             var Event = model.Event;
             User.findOne({email: req.body.userEmail}).exec()
@@ -33,17 +33,17 @@
                 });
         });
         /* Design Unique ID: 2604*/
-        app.get("/courses", function (req, res) {
-            Course.find({}, function (err, courses) {
+        app.get("/events", function (req, res) {
+            Course.find({}, function (err, events) {
                 if (err) res.status(500).end();
-                res.json({courseList: courses});
+                res.json({eventList: events});
             });
             //var cutoff = new Date();
             //cutoff.setDate(cutoff.getDate()-5);
             //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
         /* Design Unique ID: 2650*/
-        app.get("/courses/nextRounds/:courseCode", function (req, res) {
+        app.get("/events/nextRounds/:courseCode", function (req, res) {
 
             var Event = model.Event;
             console.log(req.param("courseCode"));

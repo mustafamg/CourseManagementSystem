@@ -16,7 +16,7 @@ var ServiceSchema = new Schema({
     Requests: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
 });
 
-var ServiceRequest = new Schema({
+var ServiceRequestSchema = new Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     service: {type: mongoose.Schema.Types.ObjectId, ref: 'Service'},
     creationDate: {type: Date, required: true}
@@ -51,6 +51,7 @@ module.exports = {
     Event: mongoose.model('Event', EventSchema),
     User: mongoose.model('User', UserSchema),
     Service: mongoose.model('Service', ServiceSchema),
+    ServiceRequest: mongoose.model('ServiceRequest', ServiceRequestSchema),
     Notification: mongoose.model('Notification', NotificationSchema)
 };
 /*

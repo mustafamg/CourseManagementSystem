@@ -205,12 +205,12 @@ describe('Service Catalog Operations', function () {
 
 
 
-        it('Should return not found for an event that has not been registered before', function (done) {
+        it('Should return not found for a service that is not found', function (done) {
             request(app)
-                .post('/course/registerToRound')
+                .post('/services/register')
                 .send({
                     userEmail: 'mugamal@itida.gov.eg',
-                    eventId: mongoose.Schema.ObjectId
+                    code: 'InExistentCode'
                 })
                 .expect(404)//Not Found
                 .end(function (err, res) {
@@ -219,84 +219,6 @@ describe('Service Catalog Operations', function () {
                 });
         });
 
-    });
-
-
-
-
-    describe('Course Get Next Round operation', function () {
-
-        /*2650*/
-        it('Try to get a course next round', function (done) {
-            request(app)
-                .get('/courses/nextRounds/SoaCode')
-                .expect(200)//OK
-                .end(function (err, res) {
-                    should.not.exist(err);
-
-                    should.exist(res.body.eventList);//date difference less than value
-                    var from=moment(res.body.eventList[0].from);
-                    var dif = from.diff(soaCourseFromDate);//.should.equalDate.
-                    dif.should.be.approximately(0,1);
-                    done();
-                });
-        });
-        /*2650*/
-
-        it('Try to get a non existing course Next Round', function (done) {
-            request(app)
-                .post('/courses/getCourseNextRounds')
-                .send({
-                    code:'NOTFOUND'
-                })
-                .expect(404)// Not Found
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
-    });
-
-    describe('Course NewRound operation', function () {
-        /*2651*/
-        it('Should add a new course round', function (done) {
-            request(app)
-                .post('/courses/newRound')
-                .send({
-                    id: archCourseId,//Added as a random Id intentionally
-                    from:courseFromDate,
-                    to: courseToDate
-                })
-                .expect(201)//Created
-                .end(function (err, res) {
-                    should.not.exist(err);
-                    should.exist(res.body.event);
-
-                    var from=moment(res.body.event.from);
-                    var fromDif = from.diff(courseFromDate);//.should.equalDate.
-                    var to=moment(res.body.event.to);
-                    var toDif = to.diff(courseToDate);//.should.equalDate.
-                    should.exist(res.body.event._id);
-                    fromDif.should.be.approximately(0,1);
-                    toDif.should.be.approximately(0,1);
-                    done();
-                });
-        });
-
-        /*2651*/
-        it('Try to add a new course round to a non existent course', function (done) {
-            request(app)
-                .post('/courses/newRound')
-                .send({
-                    id: '666f6f2d6261722d71757578'//Added as a random Id intentionally
-                })
-                .expect(404)//NOT FOUND
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
     });
 
 });

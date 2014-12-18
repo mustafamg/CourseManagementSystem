@@ -250,7 +250,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .delete('/courses')
                 .send({
-                    _id: eventId1//Added as a random Id intentionally
+                    id: '53fbf4615c3b9f41c381b6a3'//Added as a random Id intentionally
                 })
                 .expect(404)//NOT FOUND
                 .end(function (err, res) {

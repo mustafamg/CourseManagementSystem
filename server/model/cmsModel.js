@@ -13,7 +13,7 @@ var ServiceSchema = new Schema({
     code: {type: String, required: true},//search service by code
     title: {type: String, required: true},
     description: {type: String, required: true},
-    Requests: [{type: mongoose.Schema.Types.ObjectId, ref: 'ServiceRequest'}]
+    requests: [{type: mongoose.Schema.Types.ObjectId, ref: 'ServiceRequest'}]
 });
 
 var ServiceRequestSchema = new Schema({

@@ -76,14 +76,15 @@
                         if (service == null)
                             return res.json(404, {message: "No service with this id"});
 
-                        if (service.users.indexOf(user._id) > -1)
-                            return res.json(409, {message: "User already subscribed to this service"}).end();
+                        //if (service.users.indexOf(user._id) > -1)
+                        //    return res.json(409, {message: "User already subscribed to this service"});
                         var serviceRequest = new ServiceRequest();
                         serviceRequest.user = user;
                         serviceRequest.service = service;
                         serviceRequest.creationDate = Date.now();
                         serviceRequest.save(function (err, sr) {
-                            service.serviceRequests.push(serviceRequest);
+                            if(err) return json(500, "Error in registration to service: " + err);
+                            service.requests.push(sr);
                             service.save(function (err, evnt) {
                                 if (err)
                                     return res.json(500, {message: "Internal server error: " + err});

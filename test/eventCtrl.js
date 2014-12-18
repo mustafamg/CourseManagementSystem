@@ -12,7 +12,7 @@ var Event = mongoose.model('Event'),
 var eventId1, eventId2,
     userId;
 
-describe('Course Catalog API, Course Registration Operation', function () {
+describe('Event Catalog Operations', function () {
     
     before(prepareDataForTest);
     function prepareDataForTest(done) {
@@ -128,88 +128,22 @@ describe('Course Catalog API, Course Registration Operation', function () {
 				done();
 			});
 	});
+    describe('Event Management API, Event Listing Operations', function () {
 
-});
-
-describe('Event Management API, Event Listing Operations', function () {
-
-    it('Should return Lise of all events in system', function (done) {
-        request(app)
-            .get('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-            in design*/
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.should.hasOwnProperty("eventList").not.equal(undefined);
-                done();
-            });
-    });
-    /*******************************************************
-    it('should list up-coming rounds', function(done){});
-     *******************************************************/
-});
-
-describe('Course Catalog API, Course Alteration Operations "Add, Update and Delete"', function () {
-
-    before(prepareDataForTest);
-    function prepareDataForTest(done) {
-        //mockgoose.reset();
-
-        Course.create([
-            {
-                title: 'SW Arch',
-                description: 'This is a practical Arch course'
-            },
-            {
-                title: 'Practical SOA',
-                description: 'This is a practical SOA course'
-            }])
-
-
-            .then(function () {
-                done();
-            });
-    }
-    after(function (done) {
-        clearDB(done);
-    });
-
-    function clearDB(done) {
-        for (var i in mongoose.connection.collections) {
-            mongoose.connection.collections[i].remove(function () {
-            });
-        }
-        done();
-    }
-
-    it('Should return course rounds in form of eventList of courseId', function (done) {
-        request(app)
-            .get('/course/rounds')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.eventList.should.not.equal(undefined);
-                done();
-            });
-    });
-
-
-    it('Should return all the course list titles', function (done) {
-        request(app)
-            .get('/course/list')
-            .expect(200)//Not Found
-            .end(function (err, res) {
-                if (err) return done(err);
-                res.body.courseList.should.not.equal(undefined);
-                done();
-            });
+        it('Should return List of all events in system', function (done) {
+            request(app)
+                .get('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+             in design*/
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.should.hasOwnProperty("eventList").not.equal(undefined);
+                    done();
+                });
+        });
+        /*******************************************************
+         it('should list up-coming rounds', function(done){});
+         *******************************************************/
     });
 });
 
-describe('Delete operation', function(){
-    it('should delete course of certain id');
-});
-
-describe('NewRound operation', function(){
-    it('should create new round (event) of certain course');
-});

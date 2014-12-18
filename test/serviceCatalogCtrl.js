@@ -9,20 +9,17 @@ var mockgoose = require('mockgoose');
 
 var Model = require('../server/model/cmsModel');
 mockgoose(mongoose);
-var Event = mongoose.model('Event'),
-    Course = mongoose.model('Course'),
+var ServiceRequest = mongoose.model('ServiceRequest'),
+    Service = mongoose.model('Service'),
     User = mongoose.model('User');
-var eventId1, eventId2,
+var serviceId1, serviceId2,
     userId,soaCourse,archCourse,soaCourseId,archCourseId;
-var courseFromDate= moment(['2015','01','20']);
-var courseToDate= moment(['2015','01','22']);
-var soaCourseFromDate= moment(['2015','02','30']);
-var soaCourseToDate= moment(['2015','03','01']);
-var archCourseFromDate= new Date('2015','02','20');
-var archCourseToDate= new Date('2015','02','22');
+
+var trmServiceDate= new Date('2015','02','20');
+var leanServiceDate= new Date('2015','02','22');
 describe('Service Catalog Operations', function () {
-    soaCourse='Practical SOA';
-    archCourse='SW Arch';
+    trmService='TRM Service';
+    leanService='Lean Strategy Service';
     beforeEach(prepareDataForTest);
     function prepareDataForTest(done) {
         //mockgoose.reset();
@@ -33,43 +30,38 @@ describe('Service Catalog Operations', function () {
             if (err) done(err);
             userId = model._id;
         }).then(function () {
-            Event.create([{
-                title: soaCourse,
-                description: 'This is a practical course',
-                from:soaCourseFromDate,
-                to:soaCourseToDate,
-                cost: 1500,
-                refId:"SoaCode"
+            Service.create([{
+                code:'TrmServiceCode',
+                title: trmService,
+                description: 'This is a TRM Consultation Service ',
+                Requests: [userId]
             },
                 {
-                    title: archCourse,
-                    description: 'This is a practical course',
-                    from:archCourseFromDate,
-                    to:archCourseToDate,
-                    cost: 1500,
-                    users: [userId]
-                }], function (err, event1, event2) {
+                    code:'LeanStrategyServiceCode',
+                    title: leanService,
+                    description: 'This is a Lean Strategy Consultation Service '
+
+                }], function (err, service1, service2) {
                 if (err) done(err);
-                eventId1 = event1._id;
-                eventId2 = event2._id;
+                serviceId1 = service1._id;
+                serviceId2 = service2._id;
             })
 
         }).then(function () {
 
-                Course.create([
+                ServiceRequest.create([
                     {
-                        code:'ArchCode',
-                        title: archCourse,
-                        description: 'This is a practical Arch course'
+                        user:[userId],
+                        service: [serviceId1],
+                        creationDate: trmServiceDate
                     },
                     {
-                        code:'SoaCode',
-                        title: soaCourse,
-                        description: 'This is a practical SOA course'
-                    }],function (err, model, model2) {
+                        user:[userId],
+                        service: [serviceId2],
+                        creationDate: leanServiceDate
+                    }],function (err) {
                     if (err) done(err);
-                    soaCourseId  =model2._id;
-                    archCourseId =  model._id;
+
                 } )
             }
         ).then(function () {
@@ -85,22 +77,126 @@ describe('Service Catalog Operations', function () {
         mockgoose.reset();
         done();
     }
+    describe('Service Listing Operations"', function () {
 
-    describe('Course Registration Operation', function () {
-
-        it('Should register a subscriber to a course and return success', function (done) {
+        /*2604*/
+        it('Should return a list of all services', function (done) {
             request(app)
-                .post('/course/registerToRound')
+                .get('/services')
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.should.hasOwnProperty("serviceList").not.equal(undefined);
+                    res.body.serviceList[0].should.hasOwnProperty("title").equal(trmService);
+                    res.body.serviceList[1].should.hasOwnProperty("title").equal(leanService);
+                    done();
+                });
+        });
+    });
+    describe('Service Addition Operations', function () {
+
+        /*2605*/
+        it('Should add a new service', function (done) {
+            request(app)
+                .post('/services')
+                .send({
+                    code: 'CMMICode',
+                    title: 'CMMI service',
+                    description:'This is a CMMI service'
+                })
+                .expect(201)//Created
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    res.body.hasOwnProperty('id');
+                    done();
+                });
+        });
+
+
+
+    });
+    describe('Service Update operation', function () {
+        /*2606*/
+        it('Should update an existing service', function (done) {
+            request(app)
+                .put('/services')
+                .send({
+                    id: serviceId1,
+                    code: 'TrmServiceCode',
+                    title: 'A TRM Service Update',
+                    description:'This is a TRM update'
+
+                })
+                .expect(200)//Ok
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+        /*2606*/
+        it('Try to update a non existing service', function (done) {
+            request(app)
+                .put('/services')
+                .send({
+                    code: 'InExistentCode',
+                    title: 'Updating InExistent Code',
+                    description:'This should not be processed'
+                })
+                .expect(404)//NOT FOUND
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+    describe('Service Delete operation', function () {
+        /*2607*/
+        it('Try to delete an existing course', function (done) {
+            request(app)
+                .delete('/services')
+                .send({
+                    id: serviceId1
+                })
+                .expect(204)//No Content
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    Service.findById(serviceId1,function(err, service){
+                        should.not.exist(service);
+                        done();
+                    });
+                });
+        });
+        /*2607*/
+        it('Try to delete a non existing course', function (done) {
+            request(app)
+                .delete('/courses')
+                .send({
+                    id: '53fbf4615c3b9f41c381b6a3'//Added as a random Id intentionally
+                })
+                .expect(404)//NOT FOUND
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+    });
+
+    describe('Service Registration Operation', function () {
+
+
+        it('Should register a subscriber to a service and return success', function (done) {
+            request(app)
+                .post('/services/register')
                 .send({
                     userEmail: 'mugamal@itida.gov.eg',
-                    eventId: eventId1
+                    code: 'TrmServiceCode'
                 })
                 .expect(201)//created
                 .end(function (err, res) {
                     if (err) return done(err);
-                    Event.findById(eventId1, function (err, event) {
+                    ServiceRequest.findById(serviceId1, function (err, service) {
                         if (err) done(err);
-                        event.users.length.should.not.equal(0);
+                        service.users.length.should.not.equal(0);
                     });
                     done();
                 });
@@ -111,7 +207,7 @@ describe('Service Catalog Operations', function () {
                 .post('/course/registerToRound')
                 .send({
                     userEmail: 'mugamal@itida.gov.eg',
-                    eventId: eventId2
+                    code: eventId2
                 })
                 .expect(409)//conflict
                 .end(function (err, res) {
@@ -152,113 +248,6 @@ describe('Service Catalog Operations', function () {
 
 
 
-    describe('Course Listing Operations"', function () {
-
-        /*2604*/
-        it('Should return a list of all courses', function (done) {
-            request(app)
-                .get('/courses')
-                .expect(200)
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    res.body.should.hasOwnProperty("courseList").not.equal(undefined);
-                    res.body.courseList[0].should.hasOwnProperty("title").equal(archCourse);
-                    res.body.courseList[1].should.hasOwnProperty("title").equal(soaCourse);
-                    done();
-                });
-        });
-    });
-
-    describe('Course Addition Operations', function () {
-
-        /*2605*/
-        it('Should add a new course', function (done) {
-            request(app)
-                .post('/courses')
-                .send({
-                    code: 'AgileCode',
-                    title: 'Agile Course',
-                    description:'This is an Agile Course',
-                    cost:'1500 L.E'
-                })
-                .expect(201)//Created
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    res.body.hasOwnProperty('id');
-                    done();
-                });
-        });
-
-
-
-    });
-    describe('Course Update operation', function () {
-        /*2606*/
-        it('Should update an existing course', function (done) {
-            request(app)
-                .put('/courses')
-                .send({
-                    id: archCourseId,
-                    code: 'ArchCode',
-                    title: 'Arch Code Update',
-                    description:'This is an Arch Code update',
-                    cost:'1500 L.E'
-                })
-                .expect(200)//Ok
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-        /*2606*/
-        it('Try to update a non existing course', function (done) {
-            request(app)
-                .put('/courses')
-                .send({
-                    code: 'InExistentCode',
-                    title: 'Updating InExistent Code',
-                    description:'This should not be processed',
-                    cost:'1500 L.E'
-                })
-                .expect(404)//NOT FOUND
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-    });
-
-    describe('Course Delete operation', function () {
-        /*2607*/
-        it('Try to delete an existing course', function (done) {
-            request(app)
-                .delete('/courses')
-                .send({
-                    id: soaCourseId
-                })
-                .expect(204)//No Content
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    Course.findById(soaCourseId,function(err, course){
-                        should.not.exist(course);
-                        done();
-                    });
-                });
-        });
-        /*2607*/
-        it('Try to delete a non existing course', function (done) {
-            request(app)
-                .delete('/courses')
-                .send({
-                    _id: eventId1//Added as a random Id intentionally
-                })
-                .expect(404)//NOT FOUND
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-    });
 
     describe('Course Get Next Round operation', function () {
 

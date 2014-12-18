@@ -6,7 +6,7 @@
 
         /* Design Unique ID: */
         app.get("/services", function (req, res) {
-            Course.find({}, function (err, service) {
+            Service.find({}, function (err, service) {
                 if (err) res.status(500).end();
                 res.json({courseList: service});
             });
@@ -31,7 +31,7 @@
 
         app.put("/services", function (req, res) {
 
-            Course.findById(req.body.id, function (err, service) {
+            Service.findById(req.body.id, function (err, service) {
                 if (service == null)
                     return res.status(404).end();
                 service.title = req.body.title;
@@ -42,14 +42,14 @@
                     if (!err) {
                         res.status(200).end();
                     } else {
-                        res.json(500, {message: "Could not create course. Error: " + err});
+                        res.json(500, {message: "Could not create service. Error: " + err});
                     }
                 });
             });
         });
 
         app.delete("/services", function (req, res) {
-            Service.findById(req.body.id, function (err, course) {
+            Service.findById(req.body.id, function (err, service) {
                 if (service == null)
                     return res.status(404).end();
 
@@ -57,7 +57,7 @@
                     if (!err) {
                         res.status(204).end();
                     } else {
-                        res.json(500, {message: "Could not delete course. Error: " + err});
+                        res.json(500, {message: "Could not delete service. Error: " + err});
                     }
                 });
             });

@@ -1,7 +1,6 @@
 (function (eventCatalogCtrl) {
 
     var model = require('../model/cmsModel');
-    var Course = model.Course;
     var Event = model.Event;
     eventCatalogCtrl.init = function (app) {
 
@@ -32,112 +31,69 @@
                     });
                 });
         });
-        /* Design Unique ID: 2604*/
-        app.get("/events", function (req, res) {
-            Course.find({}, function (err, events) {
-                if (err) res.status(500).end();
-                res.json({eventList: events});
-            });
-            //var cutoff = new Date();
-            //cutoff.setDate(cutoff.getDate()-5);
-            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
-        });
-        /* Design Unique ID: 2650*/
-        app.get("/events/nextRounds/:courseCode", function (req, res) {
 
-            var Event = model.Event;
-            console.log(req.param("courseCode"));
-            Event.find({from: {$gt: Date.now()}, refId: req.param("courseCode")}, function (err, evnts) {
+        app.get("/events", function (req, res) {
+            events.find({}, function (err, events) {
                 if (err) res.status(500).end();
-                console.log(evnts[0].from);
-                res.json({eventList: evnts});
+                res.json({courseList: events});
             });
-            //app.get('/p/:tagId', function(req, res) {
-            //    res.send("tagId is set to " + req.param("tagId"));
-            //});
-            //var cutoff = new Date();
-            //cutoff.setDate(cutoff.getDate()-5);
-            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
         /* Design Unique ID: 2605*/
-        app.post("/courses", function (req, res) {
+        app.post("/events", function (req, res) {
 
-            var course = new Course();
-            course.code = req.body.code;
-            course.title = req.body.title;
-            course.description = req.body.description;
-            course.cost = req.body.cost;
-
-            course.save(function (err, course) {
+            var event = createEvent(req.body);
+            event.save(function (err, event) {
                 if (!err) {
-                    res.json(201, {id: course._id});
+                    res.json(201, {id: event._id});
                 } else {
-                    res.json(500, {message: "Could not create course. Error: " + err});
+                    res.json(500, {message: "Could not create event. Error: " + err});
                 }
             });
-            //Course.create(req.body);
         });
 
-        app.put("/courses", function (req, res) {
+        app.put("/event", function (req, res) {
 
-            Course.findById(req.body.id, function (err, course) {
-                if (course == null)
+            Event.findById(req.body.id, function (err, event) {
+                if (event == null)
                     return res.status(404).end();
-                course.title = req.body.title;
-                course.description = req.body.description;
-                course.cost = req.body.cost;
+                var event = fillEvent(req.body);
 
-                course.save(function (err, course) {
+                event.save(function (err, event) {
                     if (!err) {
                         res.status(200).end();
                     } else {
-                        res.json(500, {message: "Could not create course. Error: " + err});
+                        res.json(500, {message: "Could not create event. Error: " + err});
                     }
                 });
             });
         });
 
-        app.delete("/courses", function (req, res) {
-            Course.findById(req.body.id, function (err, course) {
-                if (course == null)
+        app.delete("/event", function (req, res) {
+            Event.findById(req.body.id, function (err, event) {
+                if (event == null)
                     return res.status(404).end();
 
-                course.remove(function (err) {
+                event.remove(function (err) {
                     if (!err) {
                         res.status(204).end();
                     } else {
-                        res.json(500, {message: "Could not delete course. Error: " + err});
+                        res.json(500, {message: "Could not delete event. Error: " + err});
                     }
                 });
             });
         });
 
+        function createEvent(body){
+            var event = new Event();
+            return fillEvent(event,body);
+        };
 
-        app.post("/courses/newRound", function (req, res) {
-
-            Course.findById(req.body.id, function (err, course) {
-                if (err)
-                    return res.json(500, {message: "Could not create Event. Error: " + err});
-
-                if(!course)
-                    return res.json(404, {message: "Could not find course with id" + req.body.id});
-
-                var event = new Event();
-                event.title = course.title;
-                event.description = course.description;
-                event.cost = course.cost;
-                event.refId = course._id;
-                event.from = req.body.from;
-                event.to = req.body.to;
-                event.save(function (err, course) {
-                    if (!err) {
-                        res.json(201, {event: event});
-                    } else {
-                        res.json(500, {message: "Could not create course. Error: " + err});
-                    }
-                });
-            });
-            //Course.create(req.body);
-        });
+        function fillEvent(event, body){
+            event.title = body.title;
+            event.description = body.description;
+            event.cost = body.cost;
+            event.from = body.from;
+            event.to = body.to;
+        };
     };
 })(module.exports);

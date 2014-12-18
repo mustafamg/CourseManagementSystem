@@ -52,12 +52,6 @@
                 console.log(evnts[0].from);
                 res.json({eventList: evnts});
             });
-            //app.get('/p/:tagId', function(req, res) {
-            //    res.send("tagId is set to " + req.param("tagId"));
-            //});
-            //var cutoff = new Date();
-            //cutoff.setDate(cutoff.getDate()-5);
-            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
         });
         /* Design Unique ID: 2605*/
         app.post("/courses", function (req, res) {
@@ -111,7 +105,6 @@
                 });
             });
         });
-
 
         app.post("/courses/newRound", function (req, res) {
 

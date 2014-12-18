@@ -13,7 +13,7 @@ var ServiceRequest = mongoose.model('ServiceRequest'),
     Service = mongoose.model('Service'),
     User = mongoose.model('User');
 var serviceId1, serviceId2,
-    userId,soaCourse,archCourse,soaCourseId,archCourseId;
+    userId,serviceRequest1,archCourse,soaCourseId,archCourseId;
 
 var trmServiceDate= new Date('2015','02','20');
 var leanServiceDate= new Date('2015','02','22');
@@ -59,8 +59,9 @@ describe('Service Catalog Operations', function () {
                         user:[userId],
                         service: [serviceId2],
                         creationDate: leanServiceDate
-                    }],function (err) {
+                    }],function (err,model) {
                     if (err) done(err);
+                    serviceRequest1 = model._id;
 
                 } )
             }
@@ -202,33 +203,8 @@ describe('Service Catalog Operations', function () {
                 });
         });
 
-        it('Should fail to register a course subscriber that was previously subscribed', function (done) {
-            request(app)
-                .post('/course/registerToRound')
-                .send({
-                    userEmail: 'mugamal@itida.gov.eg',
-                    code: eventId2
-                })
-                .expect(409)//conflict
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
 
-        it('Should return not found for a user email that has not been registered before', function (done) {
-            request(app)
-                .post('/course/registerToRound')
-                .send({
-                    userEmail: 'abc@itida.gov.eg',
-                    eventId: eventId1
-                })
-                .expect(404)//Not Found
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
+
 
         it('Should return not found for an event that has not been registered before', function (done) {
             request(app)

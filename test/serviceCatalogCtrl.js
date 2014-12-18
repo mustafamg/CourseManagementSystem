@@ -33,8 +33,7 @@ describe('Service Catalog Operations', function () {
             Service.create([{
                 code:'TrmServiceCode',
                 title: trmService,
-                description: 'This is a TRM Consultation Service ',
-                Requests: [userId]
+                description: 'This is a TRM Consultation Service '
             },
                 {
                     code:'LeanStrategyServiceCode',
@@ -195,9 +194,9 @@ describe('Service Catalog Operations', function () {
                 .expect(201)//created
                 .end(function (err, res) {
                     if (err) return done(err);
-                    ServiceRequest.findById(serviceId1, function (err, service) {
+                    ServiceRequest.find({service:serviceId1}, function (err, serviceRequest) {
                         if (err) done(err);
-                        service.users.length.should.not.equal(0);
+                        should.exist(serviceRequest);
                     });
                     done();
                 });

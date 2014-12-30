@@ -13,10 +13,12 @@ var Event = mongoose.model('Event'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId;
-var soaCourseFromDate= moment(['2015','02','30']);
-var soaCourseToDate= moment(['2015','03','01']);
-var archCourseFromDate= new Date('2015','02','20');
-var archCourseToDate= new Date('2015','02','22');
+var soaConsultationFromDate= moment(['2015','02','30']);
+var soaConsultationCourseToDate= moment(['2015','03','01']);
+var archConsultationFromDate= new Date('2015','02','20');
+var archConsultationToDate= new Date('2015','02','22');
+var fossEventFromDate= new Date('2015','02','20');
+var fossEventToDate= new Date('2015','02','22');
 
 describe('Event Catalog Operations', function () {
 
@@ -34,15 +36,15 @@ describe('Event Catalog Operations', function () {
                 title: 'Practical SOA',
                 description: 'This is a practical course',
                 cost: 1500,
-                from:soaCourseFromDate,
-                to:soaCourseToDate
+                from:soaConsultationFromDate,
+                to:soaConsultationCourseToDate
             },
                 {
                     title: 'SW Arch',
                     description: 'This is a practical course',
                     cost: 1500,
-                    from:archCourseFromDate,
-                    to:archCourseToDate,
+                    from:archConsultationFromDate,
+                    to:archConsultationToDate,
                     users: [userId]
                 }], function (err, event1,event2) {
                 if (err)
@@ -166,19 +168,116 @@ describe('Event Catalog Operations', function () {
                 .post('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
              in design*/
                 .send({
-                    userEmail: 'mugamal@itida.gov.eg',
-                    eventId: eventId1
+                    title: 'FOSS',
+                    description: 'This is a FOSS event',
+                    cost: 1500,
+                    from:fossEventFromDate,
+                    to:fossEventToDate
                 })
                 .expect(201)
                 .end(function (err, res) {
                     if (err) return done(err);
-                    res.body.should.hasOwnProperty("eventList").not.equal(undefined);
+                    Event.findById(res._id, function (err, event) {
+                        if (err) done(err);
+                    });
                     done();
                 });
         });
-        /*******************************************************
-         it('should list up-coming rounds', function(done){});
-         *******************************************************/
+
+        it('Create an event that has been created before', function (done) {
+            request(app)
+                .post('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+             in design*/
+                .send({
+                    title: 'Practical SOA',
+                    description: 'This is a practical course',
+                    cost: 1500,
+                    from:soaConsultationFromDate,
+                    to:soaConsultationCourseToDate
+                })
+                .expect(409)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+
+    });
+
+    describe( 'Event Deletion Operations', function () {
+
+        it('Delete an existing event', function (done) {
+            request(app)
+                .delete('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+             in design*/
+                .send({
+                   id: eventId1
+                })
+                .expect(204)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    Event.findById(res._id, function (err, event) {
+                    should.not.exist(event);
+                    });
+                    done();
+                });
+        });
+
+        it('Delete inexistent event', function (done) {
+            request(app)
+                .delete('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+             in design*/
+                .send({
+                    id: '53fbf4615c3b9f41c381b6a3'
+                })
+                .expect(404)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+
+    });
+
+    describe( 'Event Update Operations', function () {
+
+        it('Should update an existing event', function (done) {
+            request(app)
+                .put('/events')
+                .send({
+                    title: 'Practical SOA',
+                    description: 'This is a practical course',
+                    cost: 1500,
+                    from:soaConsultationFromDate,
+                    to:soaConsultationCourseToDate,
+                    id: eventId1
+                })
+                .expect(200)//Ok
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+
+        it('Update inexistent event', function (done) {
+            request(app)
+                .put('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+             in design*/
+                .send({
+                    title: 'Practical SOA',
+                    description: 'This is a practical course',
+                    cost: 1500,
+                    from:soaConsultationFromDate,
+                    to:soaConsultationCourseToDate,
+                    id: '53fbf4615c3b9f41c381b6a3'
+                })
+                .expect(404)
+                .end(function (err, res) {
+                    if (err) return done(err);
+                    done();
+                });
+        });
+
     });
 });
 

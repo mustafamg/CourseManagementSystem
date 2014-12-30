@@ -51,12 +51,12 @@
             });
         });
 
-        app.put("/event", function (req, res) {
+        app.put("/events", function (req, res) {
 
             Event.findById(req.body.id, function (err, event) {
                 if (event == null)
                     return res.status(404).end();
-                var event = fillEvent(req.body);
+                var event = fillEvent(event, req.body);
 
                 event.save(function (err, event) {
                     if (!err) {
@@ -68,7 +68,7 @@
             });
         });
 
-        app.delete("/event", function (req, res) {
+        app.delete("/events", function (req, res) {
             Event.findById(req.body.id, function (err, event) {
                 if (event == null)
                     return res.status(404).end();
@@ -94,6 +94,7 @@
             event.cost = body.cost;
             event.from = body.from;
             event.to = body.to;
+            return event;
         };
     };
 })(module.exports);

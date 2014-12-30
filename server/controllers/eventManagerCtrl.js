@@ -33,9 +33,9 @@
         });
 
         app.get("/events", function (req, res) {
-            events.find({}, function (err, events) {
+            Event.find({}, function (err, events) {
                 if (err) res.status(500).end();
-                res.json({courseList: events});
+                res.json({eventList: events});
             });
         });
         /* Design Unique ID: 2605*/

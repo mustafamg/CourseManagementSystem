@@ -184,24 +184,6 @@ describe('Event Catalog Operations', function () {
                 });
         });
 
-        it('Create an event that has been created before', function (done) {
-            request(app)
-                .post('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
-             in design*/
-                .send({
-                    title: 'Practical SOA',
-                    description: 'This is a practical course',
-                    cost: 1500,
-                    from:soaConsultationFromDate,
-                    to:soaConsultationCourseToDate
-                })
-                .expect(409)
-                .end(function (err, res) {
-                    if (err) return done(err);
-                    done();
-                });
-        });
-
     });
 
     describe( 'Event Deletion Operations', function () {

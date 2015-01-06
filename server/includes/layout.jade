@@ -1,11 +1,16 @@
 doctype html
-html
+html(lang='en')
   head
-    title Course Management System
-    link(rel='stylesheet', href='/css/bootstrap.css')
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    link(rel='icon', href='../../favicon.ico')
+    title SECC Services/Courses Management System
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/css/site.css', rel='stylesheet')
     link(rel='stylesheet', href='/vendor/toastr/toastr.css')
-    link(rel='stylesheet', href='/css/site.css')
   body(ng-app='myApp')
     block content
     include scripts
-    

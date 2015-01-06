@@ -1,0 +1,36 @@
+script(type='text/javascript', src='/app/controllers/courses/courseEditCtrl.js')
+
+.container
+   .page-header
+      h1 Course Information
+.container
+   .row
+      form(role='form')
+         .col-lg-6
+            .well.well-sm
+               strong
+                  span.glyphicon.glyphicon-asterisk
+                  | Required Field
+            .form-group
+               label(for='CourseTitle') Course Title
+               .input-group
+                  input#InputName.form-control(type='text', name='CourseTitle', placeholder='Course Title', required='required')
+                  span.input-group-addon
+                     span.glyphicon.glyphicon-asterisk
+            .form-group
+               label(for='Cost') Cost
+               .input-group
+                  input#InputCost.form-control(type='number', name='Cost', placeholder='Cost', required='required')
+                  span.input-group-addon
+                     span.glyphicon.glyphicon-asterisk
+
+            .form-group
+               label(for='CourseDescription') Course Description
+               .input-group
+                  textarea#InputMessage.form-control(name='CourseDescription', rows='5', required='required')
+                  span.input-group-addon
+                     span.glyphicon.glyphicon-asterisk
+            button.btn.btn-lg.btn-success(onclick="location.href='';",type='button') Submit
+            button.btn.btn-lg.btn-warning(onclick="location.href='coursecatalog';",type='button') Cancel
+
+

@@ -22,7 +22,7 @@
     		
     	app.register =
         {
-            controller: $controllerProvider.register,
+            controller: $controllerProvider.register
             //directive: $compileProvider.directive,
             //filter: $filterProvider.register,
             //factory: $provide.factory,
@@ -30,11 +30,34 @@
         };
     		//$locationProvider.html5Mode(true);
             $routeProvider
-                 
                 .when('/main', {
                     templateUrl: 'partials/main',
                     controller: 'mainCtrl'
                   })//route.resolve('main', 'main/', 'main'))
+                .when('/courses', {
+                    templateUrl: 'partials/courses',
+                    controller: 'coursesCtrl'
+                })
+                .when('/courseEdit', {
+                    templateUrl: 'partials/course-edit',
+                    controller: 'courseEditCtrl'
+                })
+                .when('/events', {
+                    templateUrl: 'partials/events',
+                    controller: 'eventsCtrl'
+                })
+                .when('/eventEdit', {
+                    templateUrl: 'partials/event-edit',
+                    controller: 'eventEditCtrl'
+                })
+                .when('/services', {
+                    templateUrl: 'partials/services',
+                    controller: 'servicesCtrl'
+                })
+                .when('/serviceEdit', {
+                    templateUrl: 'partials/service-edit',
+                    controller: 'serviceEditCtrl'
+                })
                 .otherwise({ redirectTo: '/main' });
         }]);
 

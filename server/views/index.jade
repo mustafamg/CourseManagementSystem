@@ -1,17 +1,24 @@
 extends ../includes/layout
-
 block content
 	.navbar.navbar-inverse.navbar-fixed-top
 		.container
 			.navbar-header
-				a.navbar-brand(href='/') Home
-					h6 Consult the expert
+				a.navbar-brand(href='http://www.secc.org.eg') Consult the expert
 			.navbar-collapse.collapse
 				ul.nav.navbar-nav
+					li.active
+						a(href='.') Home
 					li
-						a(href='/') home
+						a(href='partials/coursecatalog') Courses
+					li
+						a(href='partials/servicescatalog') Services
+					li
+						a(href='partials/events') Events
 				div(ng-include="'/partials/login-navbar'")
+
 	section.content
-		div(ng-view)
+		.container
+			div(ng-view)
 	footer.container.text-center
-		p &copy; SECC, footer goes here
+		p © Copyright Software Engineering Competence Center 2014
+

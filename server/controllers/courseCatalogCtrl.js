@@ -32,6 +32,17 @@
                     });
                 });
         });
+
+        app.get("/courses/:id", function (req, res) {
+            console.log(req.param("id"));
+            Course.findById(req.param("id"), function (err, courses) {
+                if (err) return res.status(500).end();
+                res.json(courses);
+            });
+            //var cutoff = new Date();
+            //cutoff.setDate(cutoff.getDate()-5);
+            //MyModel.find({modificationDate: {$lt: cutoff}}, function (err, docs) { ... });
+        });
         /* Design Unique ID: 2604*/
         app.get("/courses", function (req, res) {
             Course.find({}, function (err, courses) {
@@ -74,7 +85,7 @@
 
         app.put("/courses", function (req, res) {
 
-            Course.findById(req.body.id, function (err, course) {
+            Course.findById(req.body._id, function (err, course) {
                 if (course == null)
                     return res.status(404).end();
                 course.title = req.body.title;
@@ -91,8 +102,9 @@
             });
         });
 
-        app.delete("/courses", function (req, res) {
-            Course.findById(req.body.id, function (err, course) {
+        app.delete("/courses/:id", function (req, res) {
+            console.log(req.param("id"));
+            Course.findById(req.param("id"), function (err, course) {
                 if (course == null)
                     return res.status(404).end();
 

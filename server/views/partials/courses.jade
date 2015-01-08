@@ -4,43 +4,19 @@ script(type='text/javascript', src='/app/controllers/courses/coursesCtrl.js')
 		.page-header
 			h1 List of Courses
 	.row
-		button.btn.btn-lg.btn-success(onclick="location.href='createCourse';",type='button') Add Course
+		button.btn.btn-lg.btn-success(ng-click="new()",type='button') Add Course
 	.row
 		table.table
 			thead
 				tr
-					th #
 					th Course Title
 					th Course Description
 					th Actions
 			tbody
-				tr
-					td 1
-					td Practical Service Oriented Architeture
-					td Practical Service Oriented Architeture
+				tr(ng-repeat="item in items")
+					td {{item.title}}
+					td {{item.description}}
 					td
-						//button( ng-click='local.points = local.points + 10') Edit
-						//button(ng-click='local.points = local.points - 10') Delete
-						button.btn.btn-sm.btn-warning(onclick="location.href='addevent';",type='button') New Round
-						button.btn.btn-sm.btn-primary(type='button') Edit
-						button.btn.btn-sm.btn-danger(type='button') Delete
-				tr
-					td 2
-					td Android Development
-					td Android Development
-					td
-						//button( ng-click='local.points = local.points + 10') Edit
-						//button(ng-click='local.points = local.points - 10') Delete
-						button.btn.btn-sm.btn-warning(onclick="location.href='addevent';",type='button') New Round
-						button.btn.btn-sm.btn-primary(type='button') Edit
-						button.btn.btn-sm.btn-danger(type='button') Delete
-				tr
-					td 3
-					td Test Automation
-					td Test Automation
-					td
-						//button( ng-click='local.points = local.points + 10') Edit
-						//button(ng-click='local.points = local.points - 10') Delete
-						button.btn.btn-sm.btn-warning(onclick="location.href='addevent';",type='button') New Round
-						button.btn.btn-sm.btn-primary(type='button') Edit
-						button.btn.btn-sm.btn-danger(type='button') Delete
+						button.btn.btn-sm.btn-warning(ng-click="newRound(item)",type='button') New Round
+						button.btn.btn-sm.btn-primary(ng-click="edit(item)", type='button') Edit
+						button.btn.btn-sm.btn-danger(ng-click="delete(item)", type='button') Delete

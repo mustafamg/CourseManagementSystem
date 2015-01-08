@@ -38,7 +38,7 @@
                     templateUrl: 'partials/courses',
                     controller: 'coursesCtrl'
                 })
-                .when('/courseEdit', {
+                .when('/courseEdit/:id', {
                     templateUrl: 'partials/course-edit',
                     controller: 'courseEditCtrl'
                 })
@@ -46,7 +46,7 @@
                     templateUrl: 'partials/events',
                     controller: 'eventsCtrl'
                 })
-                .when('/eventEdit', {
+                .when('/eventEdit/:id', {
                     templateUrl: 'partials/event-edit',
                     controller: 'eventEditCtrl'
                 })

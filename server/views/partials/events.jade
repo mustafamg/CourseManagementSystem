@@ -4,51 +4,25 @@ script(type='text/javascript', src='/app/controllers/events/eventsCtrl.js')
    .page-header
       h1 List of Events and Courses Rounds
 .container
-   button.btn.btn-lg.btn-success(onclick="location.href='addevent';",type='button') Add Event
+   button.btn.btn-lg.btn-success(ng-click="new()", type='button') Add Event
 .container
    table.table
       thead
          tr
-            th #
             th Event Title
             th Event Description
             th From
             th To
             th Actions
       tbody
-         tr
-            td 1
-            td Practical Service Oriented Architeture
-            td New round of Practical Service Oriented Architeture course
-            td Date1
-            td Date2
+         tr(ng-repeat="item in items")
+            td {{item.title}}
+            td {{item.description}}
+            td {{item.from}}
+            td {{item.to}}
             td
                //button( ng-click='local.points = local.points + 10') Edit
                //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
-         tr
-            td 2
-            td Android Development
-            td New round of Android Development course
-            td Date1
-            td Date2
-            td
-               //button( ng-click='local.points = local.points + 10') Edit
-               //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
-         tr
-            td 3
-            td Test Automation
-            td New round of Test Automation course
-            td Date1
-            td Date2
-            td
-               //button( ng-click='local.points = local.points + 10') Edit
-               //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
+               button.btn.btn-sm.btn-warning(ng-click="announce(item)", type='button') Announce
+               button.btn.btn-sm.btn-primary(ng-click="edit(item)", type='button') Edit
+               button.btn.btn-sm.btn-danger(ng-click="delete(item)", type='button') Delete

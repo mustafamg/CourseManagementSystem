@@ -7,7 +7,6 @@ app.register.controller('eventEditCtrl', ['$scope', '$http', '$location', '$rout
         //Todo: Define api of the main crud course url path
         var apiBaseUrl = '/events';
         var eventId = ($routeParams.id == 0) ? null : $routeParams.id;
-        var timer;
         //Todo: replace course with the main name of the object. i.e Create Expertise
         $scope.viewTitle = (eventId ? 'Edit' : 'Create') + " Event";// replace item
         $scope.buttonText = eventId ? 'Update' : 'Create';
@@ -17,7 +16,7 @@ app.register.controller('eventEditCtrl', ['$scope', '$http', '$location', '$rout
         function initialize() {
             //dataSource.initialize(apiBaseUrl);
             if (eventId)
-                $http.get(apiBaseUrl + '/' + courseId)
+                $http.get(apiBaseUrl + '/' + eventId)
                     .success(function (data) {
                         $scope.item = data;
                         console.log($scope.item);

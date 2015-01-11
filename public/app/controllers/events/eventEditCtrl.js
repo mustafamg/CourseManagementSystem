@@ -37,7 +37,6 @@ app.register.controller('eventEditCtrl', ['$scope', '$http', '$location', '$rout
             if ($scope.editForm.$valid) {
                 $scope.item.to = $("#to").val();
                 $scope.item.from = $("#from").val();
-                debugger;
                 if (!$scope.item._id)//New item
                     $http.post(apiBaseUrl, data).success(processSaveSuccess).error(processSaveError);
                 else

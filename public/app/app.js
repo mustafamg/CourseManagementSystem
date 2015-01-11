@@ -42,6 +42,10 @@
                     templateUrl: 'partials/course-edit',
                     controller: 'courseEditCtrl'
                 })
+                .when('/courseNewRoundCtrl/:id', {
+                    templateUrl: 'partials/course-new-round',
+                    controller: 'courseNewRoundCtrl'
+                })
                 .when('/events', {
                     templateUrl: 'partials/events',
                     controller: 'eventsCtrl'

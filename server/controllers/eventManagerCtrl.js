@@ -38,6 +38,13 @@
                 res.json({eventList: events});
             });
         });
+        app.get("/events/:id", function (req, res) {
+            console.log(req.param("id"));
+            Event.findById(req.param("id"), function (err, event) {
+                if (err) return res.status(500).end();
+                res.json(event);
+            });
+        });
         /* Design Unique ID: 2605*/
         app.post("/events", function (req, res) {
 
@@ -53,7 +60,7 @@
 
         app.put("/events", function (req, res) {
 
-            Event.findById(req.body.id, function (err, event) {
+            Event.findById(req.body._id, function (err, event) {
                 if (event == null)
                     return res.status(404).end();
                 var event = fillEvent(event, req.body);
@@ -68,8 +75,8 @@
             });
         });
 
-        app.delete("/events", function (req, res) {
-            Event.findById(req.body.id, function (err, event) {
+        app.delete("/events/:id", function (req, res) {
+            Event.findById(req.param("id"), function (err, event) {
                 if (event == null)
                     return res.status(404).end();
 

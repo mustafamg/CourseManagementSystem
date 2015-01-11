@@ -54,7 +54,7 @@
                     templateUrl: 'partials/services',
                     controller: 'servicesCtrl'
                 })
-                .when('/serviceEdit', {
+                .when('/serviceEdit/:id', {
                     templateUrl: 'partials/service-edit',
                     controller: 'serviceEditCtrl'
                 })

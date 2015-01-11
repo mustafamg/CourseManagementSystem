@@ -3,44 +3,19 @@ script(type='text/javascript', src='/app/controllers/services/servicesCtrl.js')
    .page-header
       h1 List of Consultation Services
 .container
-   button.btn.btn-lg.btn-success(onclick="location.href='addservice';",type='button') Add Service
+   button.btn.btn-lg.btn-success(ng-click="new()",type='button') Add Service
 .container
    table.table
       thead
          tr
-            th #
             th Service Title
             th Service Description
             th Actions
       tbody
-         tr
-            td 1
-            td Agile
-            td Agile Service description
+         tr(ng-repeat="item in items")
+            td {{item.title}}
+            td {{item.description}}
             td
-               //button( ng-click='local.points = local.points + 10') Edit
-               //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
-         tr
-            td 2
-            td SOA
-            td Service Oriented Architecture
-            td
-               //button( ng-click='local.points = local.points + 10') Edit
-               //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
-         tr
-            td 3
-            td Semantic
-            td Semantic web service
-            td
-               //button( ng-click='local.points = local.points + 10') Edit
-               //button(ng-click='local.points = local.points - 10') Delete
-               button.btn.btn-sm.btn-warning(type='button') Announce
-               button.btn.btn-sm.btn-primary(type='button') Edit
-               button.btn.btn-sm.btn-danger(type='button') Delete
-
+               button.btn.btn-sm.btn-warning(ng-click="announce(item)",type='button') Announce
+               button.btn.btn-sm.btn-primary(ng-click="edit(item)", type='button') Edit
+               button.btn.btn-sm.btn-danger(ng-click="delete(item)", type='button') Delete

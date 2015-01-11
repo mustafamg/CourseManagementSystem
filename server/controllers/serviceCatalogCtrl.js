@@ -11,7 +11,13 @@
                 res.json({serviceList: service});
             });
         });
-
+        app.get("/services/:id", function (req, res) {
+            console.log(req.param("id"));
+            Service.findById(req.param("id"), function (err, service) {
+                if (err) return res.status(500).end();
+                res.json(service);
+            });
+        });
         /* Design Unique ID: */
         app.post("/services", function (req, res) {
 
@@ -31,7 +37,7 @@
 
         app.put("/services", function (req, res) {
 
-            Service.findById(req.body.id, function (err, service) {
+            Service.findById(req.body._id, function (err, service) {
                 if (service == null)
                     return res.status(404).end();
                 service.title = req.body.title;
@@ -48,8 +54,8 @@
             });
         });
 
-        app.delete("/services", function (req, res) {
-            Service.findById(req.body.id, function (err, service) {
+        app.delete("/services/:id", function (req, res) {
+            Service.findById(req.param("id"), function (err, service) {
                 if (service == null)
                     return res.status(404).end();
 

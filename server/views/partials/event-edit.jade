@@ -1,55 +1,26 @@
 script(type='text/javascript', src='/app/controllers/events/eventEditCtrl.js')
-doctype html
-html(lang='en')
-head
-   meta(charset='utf-8')
-   meta(http-equiv='X-UA-Compatible', content='IE=edge')
-   meta(name='viewport', content='width=device-width, initial-scale=1')
-   meta(name='description', content='')
-   meta(name='author', content='')
-   link(rel='icon', href='../../favicon.ico')
-   title SECC Services/Courses Management System
-   //Bootstrap core CSS
-   link(href='/css/bootstrap.min.css', rel='stylesheet' media="screen")
-   link(href='/css/site.css', rel='stylesheet')
-   link(href="/css/bootstrap-datetimepicker.min.css", rel="stylesheet", media="screen")
-   //
-body
-.navbar.navbar-inverse.navbar-fixed-top
-   .container
-      .navbar-header
-         a.navbar-brand(href='http://www.secc.org.eg') Consult the expert
-      .navbar-collapse.collapse
-         ul.nav.navbar-nav
-            li.active
-               a(href='../') Home
-            li
-               a(href='coursecatalog') Courses
-            li
-               a(href='servicescatalog') Services
-            li
-               a(href='events') Events
 .container
    .page-header
-      h1 Events Information
+      h1 Events Information {{item.title}}
 .container
    .row
-      form(role='form')
+      form(name="editForm", role='form', ng-model="item")
          .col-lg-6
             .well.well-sm
                strong
                   span.glyphicon.glyphicon-asterisk
                   | Required Field
             .form-group
-               label(for='EventTitle') Event Title
+               input(data-ng-model="item.refId",type='hidden')
+               label(for='title') Event Title
                .input-group
-                  input#InputName.form-control(type='text', name='EventTitle', placeholder='Event Title', required='required')
+                  input#InputName.form-control(data-ng-model="item.title",type='text', name='title', placeholder='Event Title', required='required')
                   span.input-group-addon
                      span.glyphicon.glyphicon-asterisk
             .form-group
-               label(for='EventCost') Cost
+               label(for='cost') Cost
                .input-group
-                  input#InputCost.form-control(type='number', name='Cost', placeholder='Cost', required='required')
+                  input#InputCost.form-control(data-ng-model="item.cost",type='text', name='cost', placeholder='Cost', required='required')
                   span.input-group-addon
                      span.glyphicon.glyphicon-asterisk
             //.form-group
@@ -59,34 +30,36 @@ body
             //      span.input-group-addon
             //         span.glyphicon.glyphicon-asterisk
             .form-group
-               label(for="dtp_input1") From
-               .input-group.date.form_datetime.col-lg-6(data-date="2015-01-1T05:25:07Z", data-date-format="dd MM yyyy - HH:ii p", data-link-field="dtp_input1")
-                  input.form-control(type="text", size="16", value="", readonly="")
+               label(for="from") From
+               .input-group.date.form_datetime.col-lg-6(data-date="2015-01-1T05:25:07Z", data-date-format="dd MM yyyy - HH:ii p", data-link-field="item.from")
+                  input.form-control(id="from", data-ng-model="item.from",type="text", size="16", value="", readonly="")
                   span.input-group-addon
                      span.glyphicon.glyphicon-remove
                   span.input-group-addon
                      span.glyphicon.glyphicon-th
-               input#dtp_input1(type="hidden", value="")
+               input#from(type="hidden", value="")
 
             .form-group
-               label(for="dtp_input2") To
-               .input-group.date.form_datetime.col-lg-6(data-date="2015-01-1T05:25:07Z", data-date-format="dd MM yyyy - HH:ii p", data-link-field="dtp_input2")
-                  input.form-control(type="text", size="16", value="", readonly="")
+               label(for="to") To
+               .input-group.date.form_datetime.col-lg-6(data-date="2015-01-1T05:25:07Z", data-date-format="dd MM yyyy - HH:ii p", data-link-field="item.to")
+                  input.form-control(id="to", data-ng-model="item.to",type="text", size="16", value="", readonly="")
                   span.input-group-addon
                      span.glyphicon.glyphicon-remove
                   span.input-group-addon
                      span.glyphicon.glyphicon-th
-               input#dtp_input2(type="hidden", value="")
+               input#to(type="hidden", value="")
 
             .form-group
-               label(for='EventDescription') Event Description
+               label(for='description') Event Description
                .input-group
-                  textarea#InputMessage.form-control(name='EventDescription', rows='5', required='required')
+                  textarea#InputMessage.form-control(data-ng-model="item.description",name='description', rows='5', required='required')
                   span.input-group-addon
                      span.glyphicon.glyphicon-asterisk
 
-            button.btn.btn-lg.btn-success(onclick="location.href='';",type='button') Submit
-            button.btn.btn-lg.btn-warning(onclick="location.href='events';",type='button') Cancel
+
+            button.btn.btn-lg.btn-success(ng-click='save(item)', type='button') Submit
+            button.btn.btn-lg.btn-warning(ng-click='cancel()', type='button') Cancel
+
 
          script(type="text/javascript", src="/jquery/jquery-1.8.3.min.js", charset="UTF-8")
          script(type="text/javascript", src="/js/bootstrap.min.js")
@@ -95,7 +68,7 @@ body
          script(type="text/javascript", src="/js/myscript", charset="UTF-8")
          script(type="text/javascript").
             $('.form_datetime').datetimepicker({
-            //language:  'fr',
+            format: 'yyyy-mm-dd hh:ii',
             weekStart: 1,
             todayBtn:  1,
             autoclose: 1,

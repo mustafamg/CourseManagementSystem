@@ -6,6 +6,7 @@
         app.get("/", function (req, res) {
             res.render('partials/login');
         });
+        /* Design Unique ID: 2502 */
         app.post('/', function(req, res) {
             if(req.body.userName=="admin" && req.body.password=="admin")
                 res.render('index');

@@ -1,3 +1,4 @@
+// Design Unique ID: 2601
 (function(controllers) {
     var homeController = require("./homeController"),
     	courseCatalogCtrl = require('./courseCatalogCtrl'),

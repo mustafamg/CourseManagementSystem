@@ -1,10 +1,11 @@
+/* Design Unique ID: 2671*/
 (function (serviceCatalogCtrl) {
 
     var model = require('../model/cmsModel');
     var Service = model.Service;
     serviceCatalogCtrl.init = function (app) {
 
-        /* Design Unique ID: */
+        /* Design Unique ID: 2672 */
         app.get("/services", function (req, res) {
             Service.find({}, function (err, service) {
                 if (err) res.status(500).end();
@@ -18,7 +19,8 @@
                 res.json(service);
             });
         });
-        /* Design Unique ID: */
+
+        /* Design Unique ID: 2673*/
         app.post("/services", function (req, res) {
 
             var service = new Service();
@@ -35,6 +37,7 @@
             });
         });
 
+        /* Design Unique ID: 2674*/
         app.put("/services", function (req, res) {
 
             Service.findById(req.body._id, function (err, service) {
@@ -55,6 +58,7 @@
             });
         });
 
+        /* Design Unique ID: 2675*/
         app.delete("/services/:id", function (req, res) {
             Service.findById(req.param("id"), function (err, service) {
                 if (service == null)
@@ -70,6 +74,7 @@
             });
         });
 
+        /* Design Unique ID: 2676*/
         app.post("/services/register", function (req, res) {
             var User = model.User;
             var ServiceRequest = model.ServiceRequest;

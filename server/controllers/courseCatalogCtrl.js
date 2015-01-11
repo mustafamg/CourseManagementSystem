@@ -1,3 +1,4 @@
+/* Design Unique ID: 2603*/
 (function (courseCatalogCtrl) {
 
     var model = require('../model/cmsModel');
@@ -83,8 +84,8 @@
             //Course.create(req.body);
         });
 
+        /* Design Unique ID: 2606*/
         app.put("/courses", function (req, res) {
-
             Course.findById(req.body._id, function (err, course) {
                 if (course == null)
                     return res.status(404).end();
@@ -103,6 +104,7 @@
             });
         });
 
+        /* Design Unique ID: 2607*/
         app.delete("/courses/:id", function (req, res) {
             console.log(req.param("id"));
             Course.findById(req.param("id"), function (err, course) {
@@ -119,6 +121,7 @@
             });
         });
 
+        /* Design Unique ID: 2651*/
         app.post("/courses/newRound", function (req, res) {
 
             Course.findById(req.body.refId, function (err, course) {

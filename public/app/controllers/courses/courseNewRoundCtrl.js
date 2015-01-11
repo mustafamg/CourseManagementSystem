@@ -5,7 +5,7 @@ app.register.controller('courseNewRoundCtrl', ['$scope', '$http', '$location', '
         //Todo: Define list route
         var listEvents = '/events';
         var listCourses = '/courses';
-        var newRoundUrl = '/courses/newRound'
+        var newRoundUrl = '/courses/newRound';
         var courseId = ($routeParams.id == 0) ? null : $routeParams.id;
         $scope.buttonText = 'Create New Round';
         initialize();

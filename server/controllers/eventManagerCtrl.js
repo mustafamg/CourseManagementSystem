@@ -1,10 +1,26 @@
+/* Design Unique ID: 2625*/
 (function (eventCatalogCtrl) {
 
     var model = require('../model/cmsModel');
     var Event = model.Event;
     eventCatalogCtrl.init = function (app) {
 
-        /* Design Unique ID: 2637*/
+        /* Design Unique ID: 2626*/
+        app.get("/events", function (req, res) {
+            Event.find({}, function (err, events) {
+                if (err) res.status(500).end();
+                res.json({eventList: events});
+            });
+        });
+        app.get("/events/:id", function (req, res) {
+            console.log(req.param("id"));
+            Event.findById(req.param("id"), function (err, event) {
+                if (err) return res.status(500).end();
+                res.json(event);
+            });
+        });
+
+        /* Design Unique ID: 2663*/
         app.post("/events/register", function (req, res) {
             var User = model.User;
             var Event = model.Event;
@@ -32,22 +48,8 @@
                 });
         });
 
-        app.get("/events", function (req, res) {
-            Event.find({}, function (err, events) {
-                if (err) res.status(500).end();
-                res.json({eventList: events});
-            });
-        });
-        app.get("/events/:id", function (req, res) {
-            console.log(req.param("id"));
-            Event.findById(req.param("id"), function (err, event) {
-                if (err) return res.status(500).end();
-                res.json(event);
-            });
-        });
-        /* Design Unique ID: 2605*/
+        /* Design Unique ID: 2627*/
         app.post("/events", function (req, res) {
-
             var event = createEvent(req.body);
             event.save(function (err, event) {
                 if (!err) {
@@ -58,6 +60,7 @@
             });
         });
 
+        /* Design Unique ID: 2628*/
         app.put("/events", function (req, res) {
 
             Event.findById(req.body._id, function (err, event) {
@@ -75,6 +78,7 @@
             });
         });
 
+        /* Design Unique ID: 2629*/
         app.delete("/events/:id", function (req, res) {
             Event.findById(req.param("id"), function (err, event) {
                 if (event == null)
@@ -88,6 +92,11 @@
                     }
                 });
             });
+        });
+
+        /* Design Unique ID: 2631*/
+        app.get("/events/notify/:id", function (req, res) {
+           res.json(500,{message: "Notify is not implemented!!"});
         });
 
         function createEvent(body){

@@ -65,7 +65,7 @@ app.register.controller('courseEditCtrl', ['$scope','$http', '$location', '$rout
 
         function processSaveError(error) {
             //ui.showMessage("Error happened while saving: " + error.Message, "error");
-            alert("Error happened while saving: " + error.Message, "error");
+            alert("Error happened while saving: " + error.message + "error");
 
         };
         function loadItemError(error) {

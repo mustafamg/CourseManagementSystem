@@ -4,7 +4,13 @@
     //var data = require("../../data");
     homeController.init= function(app) {
         app.get("/", function (req, res) {
-            res.render('index');//"<html><body>Hi Hi sir</body></html>");
+            res.render('partials/login');
+        });
+        app.post('/', function(req, res) {
+            if(req.body.userName=="admin" && req.body.password=="admin")
+                res.render('index');
+            else
+                res.render('partials/login');
         });
         app.post("/newCategory", function(req, res) {
             var category = req.body.categoryName;

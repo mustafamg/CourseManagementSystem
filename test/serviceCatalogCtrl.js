@@ -122,7 +122,7 @@ describe('Service Catalog Operations', function () {
                 .put('/services')
                 .send({
                     _id: serviceId1,
-                    code: 'TrmServiceCode',
+                    code: 'TrmServiceCodeUpdate',
                     title: 'A TRM Service Update',
                     description:'This is a TRM update'
 
@@ -130,7 +130,14 @@ describe('Service Catalog Operations', function () {
                 .expect(200)//Ok
                 .end(function (err, res) {
                     if (err) return done(err);
-                    done();
+                    Service.findById(serviceId1,function(err, service){
+                        should.exist(service);
+                        service.code.should.equal('TrmServiceCodeUpdate');
+                        service.title.should.equal('A TRM Service Update');
+                        service.description.should.equal('This is a TRM update');
+                        done();
+                    });
+
                 });
         });
         /*2606*/

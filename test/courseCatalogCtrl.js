@@ -199,15 +199,23 @@ describe('Course Catalog Operations', function () {
                 .put('/courses')
                 .send({
                     _id: archCourseId,
-                    code: 'ArchCode',
+                    code: 'ArchCodeUpdate',
                     title: 'Arch Code Update',
                     description:'This is an Arch Code update',
-                    cost:'1500 L.E'
+                    cost:'1999 L.E'
                 })
                 .expect(200)//Ok
                 .end(function (err, res) {
                     if (err) return done(err);
-                    done();
+
+                    Course.findById(archCourseId,function(err, course){
+                        should.exist(course);
+                        course.code.should.equal('ArchCodeUpdate');
+                        course.title.should.equal('Arch Code Update');
+                        course.description.should.equal('This is an Arch Code update');
+                        course.cost.should.equal('1999 L.E');
+                        done();
+                    });
                 });
         });
         /*2606*/

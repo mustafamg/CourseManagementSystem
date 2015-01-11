@@ -31,6 +31,11 @@ app.register.controller('courseNewRoundCtrl', ['$scope', '$http', '$location', '
                 $scope.item.from = $("#from").val();
                 $http.post(newRoundUrl, data).success(processSaveSuccess).error(processSaveError);
             }
+            else
+            {
+                alert("Please insert missing data");
+
+            }
         };
 
         $scope.cancel = function () {
@@ -44,11 +49,13 @@ app.register.controller('courseNewRoundCtrl', ['$scope', '$http', '$location', '
 
         function processSaveError(error) {
             //ui.showMessage("Error happened while saving: " + error.Message, "error");
+            alert("Error happened while saving: " + error.Message, "error");
         };
         function loadItemError(error) {
             console.log(error);
             //ui.showMessage("Failed to load course, it may be deleted by someone else", "error");
             //$location.path(listRoute)
+            alert("Error happened while loading: " + error.Message, "error");
         };
     }]);
 //controller

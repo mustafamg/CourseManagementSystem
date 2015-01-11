@@ -41,6 +41,11 @@ app.register.controller('eventEditCtrl', ['$scope', '$http', '$location', '$rout
                 else
                     $http.put(apiBaseUrl, data).success(processSaveSuccess).error(processSaveError);
             }
+            else
+            {
+                alert("Please insert missing data");
+
+            }
         };
 
         $scope.cancel = function () {
@@ -55,11 +60,13 @@ app.register.controller('eventEditCtrl', ['$scope', '$http', '$location', '$rout
 
         function processSaveError(error) {
             //ui.showMessage("Error happened while saving: " + error.Message, "error");
+            alert("Error happened while saving: " + error.Message, "error");
         };
         function loadItemError(error) {
             console.log(error);
             //ui.showMessage("Failed to load course, it may be deleted by someone else", "error");
             //$location.path(listRoute)
+            alert("Error happened while loading: " + error.Message, "error");
         };
     }]);
 //controller

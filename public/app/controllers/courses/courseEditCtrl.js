@@ -45,6 +45,12 @@ app.register.controller('courseEditCtrl', ['$scope','$http', '$location', '$rout
                 else
                     $http.put(apiBaseUrl, data).success(processSaveSuccess).error(processSaveError);
             }
+
+            else
+            {
+
+                alert("Please insert missing data");
+            }
         };
 
         $scope.cancel = function () {
@@ -59,6 +65,8 @@ app.register.controller('courseEditCtrl', ['$scope','$http', '$location', '$rout
 
         function processSaveError(error) {
             //ui.showMessage("Error happened while saving: " + error.Message, "error");
+            alert("Error happened while saving: " + error.Message, "error");
+
         };
         function loadItemError(error) {
             console.log(error);

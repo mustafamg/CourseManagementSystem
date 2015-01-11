@@ -53,7 +53,7 @@
             $scope.list();
             //Todo: process load error here
             function processLoadError(error) {
-                //ui.showMessage('Unable to load data: ' + error.Message, 'error');
+                alert("Error happened while loading: " + error.Message, "error");
             };
         }]);
 //controller

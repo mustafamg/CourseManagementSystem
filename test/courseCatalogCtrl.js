@@ -306,6 +306,9 @@ describe('Course Catalog Operations', function () {
                 .post('/courses/newRound')
                 .send({
                     refId: archCourseId,//Added as a random Id intentionally
+                    title: "test title",
+                    description: "test description",
+                    cost: "50 us",
                     from:courseFromDate,
                     to: courseToDate
                 })

@@ -24,7 +24,7 @@ var ServiceRequestSchema = new Schema({
 var EventSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
-    cost: {type: Number, required: false},
+    cost: {type: String, required: false},
     from: {type: Date, required: true},
     to: {type: Date, required: true},
     refId: {type: String, required: false}, //course Id if the event is for course

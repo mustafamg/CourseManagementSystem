@@ -138,9 +138,9 @@
                 event.refId = course._id;
                 event.from = req.body.from;
                 event.to = req.body.to;
-                event.save(function (err, course) {
+                event.save(function (err, evnt) {
                     if (!err) {
-                        res.json(201, {event: event});
+                        res.json(201, {event: evnt});
                     } else {
                         res.json(500, {message: "Could not create new round. Error: " + err});
                     }

@@ -121,7 +121,7 @@
 
         app.post("/courses/newRound", function (req, res) {
 
-            Course.findById(req.body.id, function (err, course) {
+            Course.findById(req.body.refId, function (err, course) {
                 if (err)
                     return res.json(500, {message: "Could not create Event. Error: " + err});
 
@@ -129,9 +129,9 @@
                     return res.json(404, {message: "Could not find course with id" + req.body.id});
 
                 var event = new Event();
-                event.title = course.title;
-                event.description = course.description;
-                event.cost = course.cost;
+                event.title = req.body.title;
+                event.description = req.body.description;
+                event.cost = req.body.cost;
                 event.refId = course._id;
                 event.from = req.body.from;
                 event.to = req.body.to;
@@ -139,7 +139,7 @@
                     if (!err) {
                         res.json(201, {event: event});
                     } else {
-                        res.json(500, {message: "Could not create course. Error: " + err});
+                        res.json(500, {message: "Could not create new round. Error: " + err});
                     }
                 });
             });

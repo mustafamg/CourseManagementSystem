@@ -17,6 +17,11 @@
             $scope.new = function () {
                 $location.path(editRoute + "0"); //0 means new items
             };
+
+            //New round
+            $scope.newRound = function (item) {
+                $location.path('courseNewRoundCtrl/' + item._id); //0 means new items
+            };
             //Edit
             $scope.edit = function (item) {
                 console.log(editRoute + item._id);

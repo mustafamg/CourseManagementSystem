@@ -43,6 +43,7 @@
                 service.title = req.body.title;
                 service.description = req.body.description;
                 service.cost = req.body.cost;
+                service.code=req.body.code;
 
                 service.save(function (err, service) {
                     if (!err) {

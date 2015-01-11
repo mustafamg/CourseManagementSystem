@@ -91,6 +91,7 @@
                 course.title = req.body.title;
                 course.description = req.body.description;
                 course.cost = req.body.cost;
+                course.code = req.body.code;
 
                 course.save(function (err, course) {
                     if (!err) {

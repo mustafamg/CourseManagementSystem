@@ -79,7 +79,7 @@ describe('Service Catalog Operations', function () {
     }
     describe('Service Listing Operations"', function () {
 
-        /*2604*/
+        /* Design Unique ID: 2672 */
         it('Should return a list of all services', function (done) {
             request(app)
                 .get('/services')
@@ -95,7 +95,7 @@ describe('Service Catalog Operations', function () {
     });
     describe('Service Addition Operations', function () {
 
-        /*2605*/
+        /* Design Unique ID: 2673*/
         it('Should add a new service', function (done) {
             request(app)
                 .post('/services')
@@ -116,7 +116,7 @@ describe('Service Catalog Operations', function () {
 
     });
     describe('Service Update operation', function () {
-        /*2606*/
+        /* Design Unique ID: 2674*/
         it('Should update an existing service', function (done) {
             request(app)
                 .put('/services')
@@ -157,7 +157,7 @@ describe('Service Catalog Operations', function () {
         });
     });
     describe('Service Delete operation', function () {
-        /*2607*/
+        /* Design Unique ID: 2675*/
         it('Try to delete an existing course', function (done) {
             request(app)
                 .delete('/services/'+serviceId1)
@@ -170,10 +170,10 @@ describe('Service Catalog Operations', function () {
                     });
                 });
         });
-        /*2607*/
-        it('Try to delete a non existing course', function (done) {
+        /* Design Unique ID: 2675*/
+        it('Try to delete a non existing service', function (done) {
             request(app)
-                .delete('/courses')
+                .delete('/services')
                 .send({
                     id: '53fbf4615c3b9f41c381b6a3'//Added as a random Id intentionally
                 })
@@ -187,7 +187,7 @@ describe('Service Catalog Operations', function () {
 
     describe('Service Registration Operation', function () {
 
-
+        /* Design Unique ID: 2676*/
         it('Should register a subscriber to a service and return success', function (done) {
             request(app)
                 .post('/services/register')
@@ -207,7 +207,7 @@ describe('Service Catalog Operations', function () {
         });
 
 
-
+        /* Design Unique ID: 2676*/
 
         it('Should return not found for a service that is not found', function (done) {
             request(app)

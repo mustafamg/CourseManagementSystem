@@ -198,7 +198,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .put('/courses')
                 .send({
-                    id: archCourseId,
+                    _id: archCourseId,
                     code: 'ArchCode',
                     title: 'Arch Code Update',
                     description:'This is an Arch Code update',
@@ -250,7 +250,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .delete('/courses')
                 .send({
-                    id: '53fbf4615c3b9f41c381b6a3'//Added as a random Id intentionally
+                    _id: '53fbf4615c3b9f41c381b6a3'//Added as a random Id intentionally
                 })
                 .expect(404)//NOT FOUND
                 .end(function (err, res) {

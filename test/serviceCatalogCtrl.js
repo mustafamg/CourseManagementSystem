@@ -121,7 +121,7 @@ describe('Service Catalog Operations', function () {
             request(app)
                 .put('/services')
                 .send({
-                    id: serviceId1,
+                    _id: serviceId1,
                     code: 'TrmServiceCode',
                     title: 'A TRM Service Update',
                     description:'This is a TRM update'

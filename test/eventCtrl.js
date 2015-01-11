@@ -232,7 +232,7 @@ describe('Event Catalog Operations', function () {
                     cost: 1500,
                     from:soaConsultationFromDate,
                     to:soaConsultationCourseToDate,
-                    id: eventId1
+                    _id: eventId1
                 })
                 .expect(200)//Ok
                 .end(function (err, res) {

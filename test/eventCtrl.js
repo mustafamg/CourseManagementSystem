@@ -190,11 +190,8 @@ describe('Event Catalog Operations', function () {
 
         it('Delete an existing event', function (done) {
             request(app)
-                .delete('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
+                .delete('/events/'+eventId1)/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
              in design*/
-                .send({
-                   id: eventId1
-                })
                 .expect(204)
                 .end(function (err, res) {
                     if (err) return done(err);

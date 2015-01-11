@@ -160,10 +160,7 @@ describe('Service Catalog Operations', function () {
         /*2607*/
         it('Try to delete an existing course', function (done) {
             request(app)
-                .delete('/services')
-                .send({
-                    id: serviceId1
-                })
+                .delete('/services/'+serviceId1)
                 .expect(204)//No Content
                 .end(function (err, res) {
                     if (err) return done(err);

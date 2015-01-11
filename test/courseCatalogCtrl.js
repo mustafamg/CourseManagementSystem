@@ -240,10 +240,7 @@ describe('Course Catalog Operations', function () {
 /*2607*/
         it('Try to delete an existing course', function (done) {
             request(app)
-                .delete('/courses')
-                .send({
-                    id: soaCourseId
-                })
+                .delete('/courses/'+soaCourseId)
                 .expect(204)//No Content
                 .end(function (err, res) {
                     if (err) return done(err);
@@ -308,7 +305,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .post('/courses/newRound')
                 .send({
-                    id: archCourseId,//Added as a random Id intentionally
+                    courseId: archCourseId,//Added as a random Id intentionally
                     from:courseFromDate,
                     to: courseToDate
                 })

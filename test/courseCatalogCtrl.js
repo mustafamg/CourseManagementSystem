@@ -87,7 +87,7 @@ describe('Course Catalog Operations', function () {
     }
 
     describe('Course Registration Operation', function () {
-
+        /* Design Unique ID: 2637*/
         it('Should register a subscriber to a course and return success', function (done) {
             request(app)
                 .post('/course/registerToRound')
@@ -105,7 +105,7 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-
+        /* Design Unique ID: 2637*/
         it('Should fail to register a course subscriber that was previously subscribed', function (done) {
             request(app)
                 .post('/course/registerToRound')
@@ -119,7 +119,7 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-
+        /* Design Unique ID: 2637*/
         it('Should return not found for a user email that has not been registered before', function (done) {
             request(app)
                 .post('/course/registerToRound')
@@ -133,7 +133,7 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-
+        /* Design Unique ID: 2637*/
         it('Should return not found for an event that has not been registered before', function (done) {
             request(app)
                 .post('/course/registerToRound')
@@ -154,7 +154,7 @@ describe('Course Catalog Operations', function () {
 
     describe('Course Listing Operations"', function () {
 
-/*2604*/
+        /* Design Unique ID: 2604*/
         it('Should return a list of all courses', function (done) {
             request(app)
                 .get('/courses')
@@ -171,7 +171,7 @@ describe('Course Catalog Operations', function () {
 
     describe('Course Addition Operations', function () {
 
-        /*2605*/
+        /* Design Unique ID: 2605*/
         it('Should add a new course', function (done) {
             request(app)
                 .post('/courses')
@@ -193,7 +193,7 @@ describe('Course Catalog Operations', function () {
 
     });
     describe('Course Update operation', function () {
-        /*2606*/
+        /* Design Unique ID: 2606*/
         it('Should update an existing course', function (done) {
             request(app)
                 .put('/courses')
@@ -218,7 +218,7 @@ describe('Course Catalog Operations', function () {
                     });
                 });
         });
-        /*2606*/
+        /* Design Unique ID: 2606*/
         it('Try to update a non existing course', function (done) {
             request(app)
                 .put('/courses')
@@ -237,7 +237,7 @@ describe('Course Catalog Operations', function () {
     });
 
     describe('Course Delete operation', function () {
-/*2607*/
+        /* Design Unique ID: 2607*/
         it('Try to delete an existing course', function (done) {
             request(app)
                 .delete('/courses/'+soaCourseId)
@@ -250,7 +250,7 @@ describe('Course Catalog Operations', function () {
                     });
                 });
         });
-/*2607*/
+        /* Design Unique ID: 2607*/
         it('Try to delete a non existing course', function (done) {
             request(app)
                 .delete('/courses')
@@ -267,7 +267,7 @@ describe('Course Catalog Operations', function () {
 
     describe('Course Get Next Round operation', function () {
 
-        /*2650*/
+        /* Design Unique ID: 2650*/
         it('Try to get a course next round', function (done) {
             request(app)
                 .get('/courses/nextRounds/SoaCode')
@@ -282,7 +282,7 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-        /*2650*/
+        /* Design Unique ID: 2650*/
 
         it('Try to get a non existing course Next Round', function (done) {
             request(app)
@@ -300,7 +300,7 @@ describe('Course Catalog Operations', function () {
     });
 
     describe('Course NewRound operation', function () {
-/*2651*/
+        /* Design Unique ID: 2651*/
         it('Should add a new course round', function (done) {
             request(app)
                 .post('/courses/newRound')
@@ -328,7 +328,7 @@ describe('Course Catalog Operations', function () {
                 });
         });
 
-/*2651*/
+        /* Design Unique ID: 2651*/
         it('Try to add a new course round to a non existent course', function (done) {
             request(app)
                 .post('/courses/newRound')

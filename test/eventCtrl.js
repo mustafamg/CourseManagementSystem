@@ -82,6 +82,7 @@ describe('Event Catalog Operations', function () {
     }
 
     describe( 'Event Registration Operations', function () {
+        /* Design Unique ID: 2663*/
     it('Should register a subscriber to a event and return success', function (done) {
         request(app)
             .post('/events/register')
@@ -99,7 +100,7 @@ describe('Event Catalog Operations', function () {
                 done();
             });
     });
-
+        /* Design Unique ID: 2663*/
     it('Should fail to register a event subscriber that was previously subscribed', function (done) {
         request(app)
             .post('/course/registerToRound')
@@ -113,7 +114,7 @@ describe('Event Catalog Operations', function () {
                 done();
             });
     });
-
+        /* Design Unique ID: 2663*/
     it('Should return not found for a user email that has not been registered before', function (done) {
         request(app)
             .post('/course/registerToRound')
@@ -127,7 +128,7 @@ describe('Event Catalog Operations', function () {
                 done();
             });
     });
-
+        /* Design Unique ID: 2663*/
 	it('Should return not found for an event that has not been registered before', function (done) {
 		request(app)
 			.post('/course/registerToRound')
@@ -143,6 +144,7 @@ describe('Event Catalog Operations', function () {
 	});
 
 });
+    /* Design Unique ID: 2626*/
     describe( 'Event Listing Operations', function () {
 
         it('Should return List of all events in system', function (done) {
@@ -162,7 +164,7 @@ describe('Event Catalog Operations', function () {
     });
 
     describe( 'Event Creation Operations', function () {
-
+        /* Design Unique ID: 2627*/
         it('Create a new event', function (done) {
             request(app)
                 .post('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
@@ -187,7 +189,7 @@ describe('Event Catalog Operations', function () {
     });
 
     describe( 'Event Deletion Operations', function () {
-
+        /* Design Unique ID: 2629*/
         it('Delete an existing event', function (done) {
             request(app)
                 .delete('/events/'+eventId1)/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
@@ -201,7 +203,7 @@ describe('Event Catalog Operations', function () {
                     done();
                 });
         });
-
+        /* Design Unique ID: 2629*/
         it('Delete inexistent event', function (done) {
             request(app)
                 .delete('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
@@ -219,7 +221,7 @@ describe('Event Catalog Operations', function () {
     });
 
     describe( 'Event Update Operations', function () {
-
+        /* Design Unique ID: 2628*/
         it('Should update an existing event', function (done) {
             request(app)
                 .put('/events')
@@ -237,7 +239,7 @@ describe('Event Catalog Operations', function () {
                     done();
                 });
         });
-
+        /* Design Unique ID: 2628*/
         it('Update inexistent event', function (done) {
             request(app)
                 .put('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected

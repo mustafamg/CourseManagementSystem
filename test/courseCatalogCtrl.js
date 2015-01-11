@@ -305,7 +305,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .post('/courses/newRound')
                 .send({
-                    courseId: archCourseId,//Added as a random Id intentionally
+                    refId: archCourseId,//Added as a random Id intentionally
                     from:courseFromDate,
                     to: courseToDate
                 })

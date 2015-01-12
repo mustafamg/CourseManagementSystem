@@ -20,6 +20,19 @@
             });
         });
 
+        app.get("/serviceRequest/:serviceId", function (req, res) {
+            console.log(req.param("id"));
+            var ServiceRequest = model.ServiceRequest();
+
+            ServiceRequest.findOne({service:req.param("serviceId")})
+                .populate("service")
+                .populate("user")
+                .exec(function (err, serReq) {
+                if (err) return res.status(500).end();
+                res.json(serReq);
+            });
+        });
+
         /* Design Unique ID: 2673*/
         app.post("/services", function (req, res) {
 
@@ -46,7 +59,7 @@
                 service.title = req.body.title;
                 service.description = req.body.description;
                 service.cost = req.body.cost;
-                service.code=req.body.code;
+                service.code = req.body.code;
 
                 service.save(function (err, service) {
                     if (!err) {
@@ -77,35 +90,48 @@
         /* Design Unique ID: 2676*/
         app.post("/services/register", function (req, res) {
             var User = model.User;
-            var ServiceRequest = model.ServiceRequest;
+            var user;
             User.findOne({email: req.body.userEmail}).exec()
-                .then(function (user) {
-                    if (user == null)
-                        return res.json(404, {message: "User with that email is not found: " + req.body.userEmail});
-                    Service.findOne({code: req.body.code}, function (err, service) {
+                .then(function (data) {
+                    if (data == null) {
+                        //return res.json(404, {message: "User with that email is not found: " + req.body.userEmail});
+                        var createdUser = new User();
+                        createdUser.name=req.body.userEmail;
+                        createdUser.email = req.body.userEmail;
+                        createdUser.save(function(err, usr){
+                            user=usr;
+                            Service.findOne({code: req.body.code}, createRequest);
+                        })
+                    }
+                    else {
+                        user=data;
+                        Service.findOne({code: req.body.code}, createRequest);
+                    }
+                });
+            function createRequest(err, service) {
+                var ServiceRequest = model.ServiceRequest;
+                if (err)
+                    return res.json(500, {message: "Internal server error: " + err});
+                if (service == null)
+                    return res.json(404, {message: "No service with this id"});
+
+                //if (service.users.indexOf(user._id) > -1)
+                //    return res.json(409, {message: "User already subscribed to this service"});
+                var serviceRequest = new ServiceRequest();
+                serviceRequest.user = user;
+                serviceRequest.service = service;
+                serviceRequest.creationDate = Date.now();
+                serviceRequest.save(function (err, sr) {
+                    if (err) return json(500, "Error in registration to service: " + err);
+                    service.requests.push(sr);
+                    service.save(function (err, evnt) {
                         if (err)
                             return res.json(500, {message: "Internal server error: " + err});
-                        if (service == null)
-                            return res.json(404, {message: "No service with this id"});
-
-                        //if (service.users.indexOf(user._id) > -1)
-                        //    return res.json(409, {message: "User already subscribed to this service"});
-                        var serviceRequest = new ServiceRequest();
-                        serviceRequest.user = user;
-                        serviceRequest.service = service;
-                        serviceRequest.creationDate = Date.now();
-                        serviceRequest.save(function (err, sr) {
-                            if(err) return json(500, "Error in registration to service: " + err);
-                            service.requests.push(sr);
-                            service.save(function (err, evnt) {
-                                if (err)
-                                    return res.json(500, {message: "Internal server error: " + err});
-                                res.json(201, {message: "created"});
-                            });
-                        });
-
+                        res.json(201, {message: "created"});
                     });
                 });
+            };
         });
+
     };
 })(module.exports);

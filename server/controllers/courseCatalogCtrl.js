@@ -59,10 +59,13 @@
 
             var Event = model.Event;
             console.log(req.param("courseCode"));
-            Event.find({from: {$gt: Date.now()}, refId: req.param("courseCode")}, function (err, evnts) {
-                if (err) res.status(500).end();
-                console.log(evnts[0].from);
-                res.json({eventList: evnts});
+            Course.findOne({code:req.param("courseCode")}, function (err, course) {
+                if(!course)
+                    return res.json(500,{message: err});
+                Event.find({from: {$gt: Date.now()}, refId: course._id }, function (err, evnts) {
+                    if (err) res.status(500).end();
+                    res.json({eventList: evnts});
+                });
             });
         });
         /* Design Unique ID: 2605*/

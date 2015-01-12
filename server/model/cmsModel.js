@@ -38,7 +38,6 @@ var UserSchema = new Schema({
     company: {type: String, required: false},
     jobTitle: {type: String, required: false},
     mobile: {type: String, required: false}
-
 });
 
 var NotificationSchema = new Schema({

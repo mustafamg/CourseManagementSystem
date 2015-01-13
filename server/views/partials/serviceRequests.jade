@@ -1,0 +1,24 @@
+// Design Unique ID: 2599
+// Design Unique ID: 2621
+script(type='text/javascript', src='/app/controllers/services/serviceRequestsCtrl.js')
+.container
+   .page-header
+      h1 Service Requests
+      h2 {{viewTitle}}
+
+.container
+   button.btn.btn-lg.btn-success(ng-click="back()",type='button') Back to Services
+.container
+   table.table
+      thead
+         tr
+            th User name
+            th Company
+            th email
+            th mobile
+      tbody
+         tr(ng-repeat="item in requests")
+            td {{item.user.name}}
+            td {{item.user.company}}
+            td {{item.user.email}}
+            td {{item.user.mobile}}

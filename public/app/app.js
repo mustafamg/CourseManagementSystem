@@ -62,6 +62,10 @@
                     templateUrl: 'partials/service-edit',
                     controller: 'serviceEditCtrl'
                 })
+                .when('/serviceRequests/:serviceId', {
+                    templateUrl: 'partials/serviceRequests',
+                    controller: 'serviceRequestsCtrl'
+                })
                 .otherwise({ redirectTo: '/main' });
         }]);
 

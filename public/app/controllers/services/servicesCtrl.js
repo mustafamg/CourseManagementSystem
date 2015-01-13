@@ -41,6 +41,9 @@
                         });
             };
 
+            $scope.serviceRequestsDetails= function (item) {
+              $location.path('/serviceRequests/' + item._id);
+            };
             //List
             $scope.list = function () {
                 $http.get(apiBaseUrl)

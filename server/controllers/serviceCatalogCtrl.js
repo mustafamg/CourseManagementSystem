@@ -20,16 +20,16 @@
             });
         });
 
-        app.get("/serviceRequest/:serviceId", function (req, res) {
-            console.log(req.param("id"));
-            var ServiceRequest = model.ServiceRequest();
+        app.get("/serviceRequests/:serviceId", function (req, res) {
+            var ServiceRequest = model.ServiceRequest;
 
-            ServiceRequest.findOne({service:req.param("serviceId")})
-                .populate("service")
+            ServiceRequest.find({service:req.param("serviceId")})
                 .populate("user")
                 .exec(function (err, serReq) {
-                if (err) return res.status(500).end();
-                res.json(serReq);
+                    Service.findById(req.param("serviceId"), function (err, service) {
+                        if (err) return res.status(500).end();
+                        res.json({service:service, requests:serReq});
+                    });
             });
         });
 

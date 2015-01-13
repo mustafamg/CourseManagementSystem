@@ -4,7 +4,6 @@ script(type='text/javascript', src='/app/controllers/services/servicesCtrl.js')
 .container
    .page-header
       h1 List of Consultation Services
-
 .container
    button.btn.btn-lg.btn-success(ng-click="new()",type='button') Add Service
 .container
@@ -19,7 +18,8 @@ script(type='text/javascript', src='/app/controllers/services/servicesCtrl.js')
          tr(ng-repeat="item in items")
             td {{item.title}}
             td {{item.description}}
-            td {{item.requests.length}}
+            td
+               a(href='', ng-click='serviceRequestsDetails(item)') {{item.requests.length}}
             td
                button.btn.btn-sm.btn-warning(ng-click="announce(item)",type='button') Announce
                button.btn.btn-sm.btn-primary(ng-click="edit(item)", type='button') Edit

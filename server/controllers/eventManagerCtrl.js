@@ -1,5 +1,7 @@
 /* Design Unique ID: 2625*/
 (function (eventCatalogCtrl) {
+    var azure=require ('azure');
+    var notificationHubService= azure.createNotificationHubService('smma','Endpoint=sb://smma-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=J1uDMsmAfIU5eoB5aBFQATRpxI94BI/r/FIA1TIb1Ls=')
 
     var model = require('../model/cmsModel');
     var Event = model.Event;
@@ -20,6 +22,18 @@
             });
         });
 
+        app.get("/events/trainee/:eventId", function (req, res) {
+            var Event = model.Event;
+
+            Event.findById(req.param("eventId"))
+                .populate("users")
+                .exec(function (err, event) {
+                    //Service.findById(req.param("serviceId"), function (err, service) {
+                        if (err) return res.status(500).end();
+                        res.json({event:event});
+                    //});
+                });
+        });
         /* Design Unique ID: 2663*/
         app.post("/events/register", function (req, res) {
             var User = model.User;
@@ -95,8 +109,21 @@
         });
 
         /* Design Unique ID: 2631*/
-        app.get("/events/notify/:id", function (req, res) {
-           res.json(500,{message: "Notify is not implemented!!"});
+        app.get("/events/notify/:eventId", function (req, res) {
+
+            Event.findById(req.param("eventId"), function (err, event) {
+                if (event == null)
+                    return res.status(404).end();
+
+                var payload = {
+                    data: {
+                        msg: event.title + '|' + event.from
+                    }
+                };
+                notificationHubService.gcm.send(null, payload, function (error) {
+                });
+                res.json(500, {message: "Notify is not implemented!!"});
+            });
         });
 
         function createEvent(body){

@@ -15,7 +15,7 @@ console.log(config);
 require('./config/express')(app, config);
 
 require('./config/mongoose')(config);
-var port =  process.env.Port;//env == 'development'? process.env.Port || config.port;
+var port =  process.env.PORT || 3000;//env == 'development'? process.env.Port || config.port;
 http.createServer(app).listen(port, function(){ //app.get('port')config.port
   console.log('Express server listening on port ' + port);
 });

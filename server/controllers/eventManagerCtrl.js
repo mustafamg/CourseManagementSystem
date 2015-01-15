@@ -1,12 +1,10 @@
 /* Design Unique ID: 2625*/
 (function (eventCatalogCtrl) {
-    var azure=require ('azure');
-    var notificationHubService= azure.createNotificationHubService('smma','Endpoint=sb://smma-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=J1uDMsmAfIU5eoB5aBFQATRpxI94BI/r/FIA1TIb1Ls=')
-
     var model = require('../model/cmsModel');
+    var notifier = require('../services/notifier');
+
     var Event = model.Event;
     eventCatalogCtrl.init = function (app) {
-
         /* Design Unique ID: 2626*/
         app.get("/events", function (req, res) {
             Event.find({}, function (err, events) {
@@ -109,20 +107,14 @@
         });
 
         /* Design Unique ID: 2631*/
-        app.get("/events/notify/:eventId", function (req, res) {
+        app.get("/events/announce/:eventId", function (req, res) {
 
             Event.findById(req.param("eventId"), function (err, event) {
+                if (err) return res.status(500).end();
                 if (event == null)
                     return res.status(404).end();
-
-                var payload = {
-                    data: {
-                        msg: event.title + '|' + event.from
-                    }
-                };
-                notificationHubService.gcm.send(null, payload, function (error) {
-                });
-                res.json(500, {message: "Notify is not implemented!!"});
+                notifier.send(event.title);
+                res.send(200);
             });
         });
 

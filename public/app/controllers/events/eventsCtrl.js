@@ -40,6 +40,17 @@
                         });
             };
 
+            //announce
+            $scope.announce = function (data) {
+
+                $http.get(apiBaseUrl + 'announce/' + data._id).
+                    success(function () {
+                        alert("Announced");
+                    }).
+                    error(function (error) {
+                        alert("error:" + error.message);
+                    });
+            };
             //List
             $scope.list = function () {
                 $http.get(apiBaseUrl)

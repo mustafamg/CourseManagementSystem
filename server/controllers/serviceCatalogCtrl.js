@@ -2,6 +2,7 @@
 (function (serviceCatalogCtrl) {
 
     var model = require('../model/cmsModel');
+    var notifier = require('../services/notifier');
     var Service = model.Service;
     serviceCatalogCtrl.init = function (app) {
 
@@ -17,6 +18,15 @@
             Service.findById(req.param("id"), function (err, service) {
                 if (err) return res.status(500).end();
                 res.json(service);
+            });
+        });
+
+        app.get("/services/announce/:id", function (req, res) {
+            console.log(req.param("id"));
+            Service.findById(req.param("id"), function (err, service) {
+                if (err) return res.status(500).end();
+                notifier.send(service.title);
+                res.send(200);
             });
         });
 

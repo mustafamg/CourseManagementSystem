@@ -1,11 +1,48 @@
 // Design Unique ID: 2597
 script(type='text/javascript', src='/app/controllers/main/mainCtrl.js')
 .container
+	.masthead
+		h3.text-muted SMMA v1.0
+		a.btn.btn-primary(href='partials/login', role='button') Login »
+	//Jumbotron
 	.jumbotron
-		h1 SAMMA Project
-		p Welcom to SAMMA Project
+		h1 SECC Services, Courses and Events Management System
+		p.lead
+			| - Manage SECC courses, services and events
+			br
+			| - Notify users with latest news
+			br
+			| - Keep SECC customers in touch
+		p
+			a.btn.btn-lg.btn-success(href='http://www.secc.org.eg/', role='button', target='_blank') Visit SECC web site
+	//Example row of columns
 	.row
-		.col-md-6
-			div(ng-include="'partials/course-requests'")
-		.col-md-6
-			div(ng-include="'partials/service-requests'")
+		.col-lg-4
+			h2 Courses
+			p
+				| - Add/Edit/Delete Courses
+				br
+				| - Create new rounds
+			p
+				a.btn.btn-primary(href='#/courses', role='button') Start »
+		.col-lg-4
+			h2 Services
+			p
+				| - Add/Edit/Delete Services
+				br
+				| - Announce for a new service
+			p
+				a.btn.btn-primary(href='#/services', role='button') Start »
+		.col-lg-4
+			h2 Events
+			p
+				| - Create Events
+				br
+				| - Announce for an event
+			p
+				a.btn.btn-primary(href='#/events', role='button') Start »
+	//.row
+	//	.col-md-6
+	//		div(ng-include="'partials/course-requests'")
+	//	.col-md-6
+	//		div(ng-include="'partials/service-requests'")

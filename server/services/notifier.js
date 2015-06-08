@@ -2,7 +2,7 @@
  * Created by agamal on 12/30/2014.
  */
 var azure=require ('azure');
-var notificationHubService= azure.createNotificationHubService('smma','Endpoint=sb://smma-ns.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=J1uDMsmAfIU5eoB5aBFQATRpxI94BI/r/FIA1TIb1Ls=')
+var notificationHubService= azure.createNotificationHubService('smma','Endpoint=sb://secc2015.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=mtOg4nqqupsFlh5BuXIZ1eOCodW0OTuyTOd8vOwEqmw=')
 
 var notifier= {};
 

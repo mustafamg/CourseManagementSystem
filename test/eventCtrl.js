@@ -13,8 +13,9 @@ var Event = mongoose.model('Event'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId;
-var soaConsultationFromDate= moment(['2015','02','30']);
-var soaConsultationCourseToDate= moment(['2015','03','01']);
+
+var soaConsultationFromDate= new Date('2015','02','30');
+var soaConsultationCourseToDate= new Date('2015','03','01');
 var archConsultationFromDate= new Date('2015','02','20');
 var archConsultationToDate= new Date('2015','02','22');
 var fossEventFromDate= new Date('2015','02','20');
@@ -46,16 +47,14 @@ describe('Event Catalog Operations', function () {
                     from:archConsultationFromDate,
                     to:archConsultationToDate,
                     users: [userId]
-                }], function (err, event1,event2) {
+                }], function (err, events) {
                 if (err)
                     return done(err);
-                eventId1 = event1._id;
-                eventId2 = event2._id;
-                done();
+                eventId1 = events[0]._id;
+                eventId2 = events[1]._id;
             })
 
         }).then(function(){
-
                 Course.create([
                     {
                         title: 'SW Arch',
@@ -134,7 +133,7 @@ describe('Event Catalog Operations', function () {
 			.post('/course/registerToRound')
 			.send({
 				userEmail: 'mugamal@itida.gov.eg',
-				eventId: mongoose.Schema.ObjectId
+				eventId: mongoose.Types.ObjectId()
 			})
 			.expect(404)//Not Found
 			.end(function (err, res) {
@@ -142,7 +141,6 @@ describe('Event Catalog Operations', function () {
 				done();
 			});
 	});
-
 });
     /* Design Unique ID: 2626*/
     describe( 'Event Listing Operations', function () {
@@ -240,7 +238,7 @@ describe('Event Catalog Operations', function () {
                 });
         });
         /* Design Unique ID: 2628*/
-        it('Update inexistent event', function (done) {
+        it('Update un-existent event', function (done) {
             request(app)
                 .put('/events')/*Note: Does this provide all course rounds or a certain course rounds? Not reflected
              in design*/
@@ -250,7 +248,7 @@ describe('Event Catalog Operations', function () {
                     cost: 1500,
                     from:soaConsultationFromDate,
                     to:soaConsultationCourseToDate,
-                    id: '53fbf4615c3b9f41c381b6a3'
+                    _id: '53fbf4615c3b9f41c381b6a3'
                 })
                 .expect(404)
                 .end(function (err, res) {

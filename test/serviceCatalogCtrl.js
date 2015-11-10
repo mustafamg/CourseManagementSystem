@@ -40,29 +40,27 @@ describe('Service Catalog Operations', function () {
                     title: leanService,
                     description: 'This is a Lean Strategy Consultation Service '
 
-                }], function (err, service1, service2) {
+                }], function (err, services) {
                 if (err) done(err);
-                serviceId1 = service1._id;
-                serviceId2 = service2._id;
+                serviceId1 = services[0]._id;
+                serviceId2 = services[1]._id;
             })
 
         }).then(function () {
-
                 ServiceRequest.create([
                     {
-                        user:[userId],
-                        service: [serviceId1],
+                        user:userId,
+                        service: serviceId1,
                         creationDate: trmServiceDate
                     },
                     {
-                        user:[userId],
-                        service: [serviceId2],
+                        user:userId,
+                        service: serviceId2,
                         creationDate: leanServiceDate
                     }],function (err,model) {
                     if (err) done(err);
-                    serviceRequest1 = model._id;
-
-                } )
+                        serviceRequest1 = model[0]._id;
+                })
             }
         ).then(function () {
                 done();

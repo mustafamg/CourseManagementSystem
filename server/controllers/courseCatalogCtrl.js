@@ -56,16 +56,17 @@
         });
         /* Design Unique ID: 2650*/
         app.get("/courses/nextRounds/:courseCode", function (req, res) {
-
             var Event = model.Event;
             console.log(req.param("courseCode"));
             Course.findOne({code:req.param("courseCode")}, function (err, course) {
-                if(!course)
-                    return res.json(500,{message: err});
-                Event.find({from: {$gt: Date.now()}, refId: course._id }, function (err, evnts) {
-                    if (err) res.status(500).end();
-                    res.json({eventList: evnts});
-                });
+                if(!course) {
+                    res.json(500, {message: err});
+                }else {
+                    Event.find({from: {$gt: Date.now()}, refId: course.code}, function (err, evnts) {
+                        if (err) res.status(500).end();
+                        res.json({eventList: evnts});
+                    });
+                }
             });
         });
         /* Design Unique ID: 2605*/
@@ -127,7 +128,7 @@
         /* Design Unique ID: 2651*/
         app.post("/courses/newRound", function (req, res) {
 
-            Course.findById(req.body.refId, function (err, course) {
+            Course.findById(req.body.id, function (err, course) {
                 if (err)
                     return res.json(500, {message: "Could not create Event. Error: " + err});
 
@@ -138,7 +139,7 @@
                 event.title = req.body.title;
                 event.description = req.body.description;
                 event.cost = req.body.cost;
-                event.refId = course._id;
+                event.refId = course.code;
                 event.from = req.body.from;
                 event.to = req.body.to;
                 event.save(function (err, evnt) {

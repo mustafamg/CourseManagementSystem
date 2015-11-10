@@ -14,12 +14,12 @@ var Event = mongoose.model('Event'),
     User = mongoose.model('User');
 var eventId1, eventId2,
     userId,soaCourse,archCourse,soaCourseId,archCourseId;
-var courseFromDate= moment(['2015','01','20']);
-var courseToDate= moment(['2015','01','22']);
-var soaCourseFromDate= moment(['2015','02','30']);
-var soaCourseToDate= moment(['2015','03','01']);
-var archCourseFromDate= new Date('2015','02','20');
-var archCourseToDate= new Date('2015','02','22');
+var courseFromDate= new Date('2015','10','20');
+var courseToDate= new Date('2015','10','22');
+var soaCourseFromDate= new Date('2015','11','30');
+var soaCourseToDate= new Date('2015','12','01');
+var archCourseFromDate= new Date('2015','11','20');
+var archCourseToDate= new Date('2015','11','22');
 describe('Course Catalog Operations', function () {
     soaCourse='Practical SOA';
     archCourse='SW Arch';
@@ -41,21 +41,20 @@ describe('Course Catalog Operations', function () {
                 cost: 1500,
                 refId:"SoaCode"
             },
-                {
-                    title: archCourse,
-                    description: 'This is a practical course',
-                    from:archCourseFromDate,
-                    to:archCourseToDate,
-                    cost: 1500,
-                    users: [userId]
-                }], function (err, event1, event2) {
+            {
+                title: archCourse,
+                description: 'This is a practical course',
+                from:archCourseFromDate,
+                to:archCourseToDate,
+                cost: 1500,
+                users: [userId]
+            }], function (err, event) {
                 if (err) done(err);
-                eventId1 = event1._id;
-                eventId2 = event2._id;
-            })
+                eventId1 = event[0]._id;
+                eventId2 = event[1]._id;
+             })
 
         }).then(function () {
-
                 Course.create([
                     {
                         code:'ArchCode',
@@ -66,10 +65,10 @@ describe('Course Catalog Operations', function () {
                         code:'SoaCode',
                         title: soaCourse,
                         description: 'This is a practical SOA course'
-                    }],function (err, model, model2) {
+                    }],function (err, model) {
                     if (err) done(err);
-                    soaCourseId  =model2._id;
-                    archCourseId =  model._id;
+                    soaCourseId  =model[1]._id;
+                    archCourseId =  model[0]._id;
                 } )
             }
         ).then(function () {
@@ -101,8 +100,8 @@ describe('Course Catalog Operations', function () {
                     Event.findById(eventId1, function (err, event) {
                         if (err) done(err);
                         event.users.length.should.not.equal(0);
+                        done();
                     });
-                    done();
                 });
         });
         /* Design Unique ID: 2637*/
@@ -139,7 +138,7 @@ describe('Course Catalog Operations', function () {
                 .post('/course/registerToRound')
                 .send({
                     userEmail: 'mugamal@itida.gov.eg',
-                    eventId: mongoose.Schema.ObjectId
+                    eventId: mongoose.Types.ObjectId()
                 })
                 .expect(404)//Not Found
                 .end(function (err, res) {
@@ -147,13 +146,9 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-
     });
 
-
-
     describe('Course Listing Operations"', function () {
-
         /* Design Unique ID: 2604*/
         it('Should return a list of all courses', function (done) {
             request(app)
@@ -188,10 +183,8 @@ describe('Course Catalog Operations', function () {
                     done();
                 });
         });
-
-
-
     });
+
     describe('Course Update operation', function () {
         /* Design Unique ID: 2606*/
         it('Should update an existing course', function (done) {
@@ -223,6 +216,7 @@ describe('Course Catalog Operations', function () {
             request(app)
                 .put('/courses')
                 .send({
+                    _id: mongoose.Types.ObjectId(),
                     code: 'InExistentCode',
                     title: 'Updating InExistent Code',
                     description:'This should not be processed',
@@ -274,7 +268,6 @@ describe('Course Catalog Operations', function () {
                 .expect(200)//OK
                 .end(function (err, res) {
                     should.not.exist(err);
-
                     should.exist(res.body.eventList);//date difference less than value
                     var from=moment(res.body.eventList[0].from);
                     var dif = from.diff(soaCourseFromDate);//.should.equalDate.

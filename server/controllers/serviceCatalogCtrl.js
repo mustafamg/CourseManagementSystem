@@ -62,7 +62,8 @@
 
         /* Design Unique ID: 2674*/
         app.put("/services", function (req, res) {
-
+            if(!req.body._id)
+                return res.status(404).end();
             Service.findById(req.body._id, function (err, service) {
                 if (service == null)
                     return res.status(404).end();

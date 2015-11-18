@@ -13,10 +13,6 @@ module.exports = function(app, config){
 	app.use(express.static(path.join(config.rootPath, 'public')));
 
 	app.use(express.bodyParser());
-	/* parse application/x-www-form-urlencoded*/
-	//app.use(bodyParser.urlencoded());
-	// parse application/json
-	//app.use(bodyParser.json());
 
 	app.use(stylus.middleware({
 		src: config.rootPath + '/public'
